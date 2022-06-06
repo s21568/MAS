@@ -1,15 +1,16 @@
-package forms;
+package forms.managementPages;
 
+
+import forms.*;
 import forms.classPages.ClassList;
 import forms.clientPages.ClientList;
 import forms.clubPages.ClubList;
 import forms.employeePages.EmployeeList;
-import forms.managementPages.ManagementPage;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class MainPage extends JFrame {
+public class ManagementPage  extends JFrame{
     private JPanel topPanel;
     private JPanel LogInPanel;
     private JButton LogIn;
@@ -18,22 +19,22 @@ public class MainPage extends JFrame {
     private JTextField emaliField;
     private JLabel emailLabel;
     private JLabel passwordLabel;
-    private JPanel mainPageMainPanel;
-    private JButton clientsButton;
+    private JScrollPane toolBoxScroll;
+    private JPanel topToolBarPanel;
     private JButton mainButton;
+    private JButton clientsButton;
     private JButton employeesButton;
     private JButton clubsButton;
     private JButton classesButton;
     private JButton managementButton;
-    private JScrollPane toolBoxScroll;
-    private JPanel topToolBarPanel;
+    private JPanel managementPageMainPanel;
 
-    public MainPage() {
-        setTitle("Main Page");
+    public ManagementPage() {
+        setTitle("Management Page");
         setSize(650, 650);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
-        setContentPane(mainPageMainPanel);
+        setContentPane(managementPageMainPanel);
         clientsButton.addActionListener(e -> {
             ClientList clientList = new ClientList();
             clientList.setSize(1, 1);
@@ -43,7 +44,12 @@ public class MainPage extends JFrame {
             this.dispose();
         });
         mainButton.addActionListener(e -> {
-            mainButton.setText("Already Here :)");
+            MainPage mainPage = new MainPage();
+            mainPage.setSize(1, 1);
+            setContentPane(mainPage.getContentPane());
+            mainPage.setVisible(true);
+            mainPage.setContentPane(mainPage.getContentPane());
+            this.dispose();
         });
         employeesButton.addActionListener(e -> {
             EmployeeList employeeList = new EmployeeList();
@@ -70,22 +76,20 @@ public class MainPage extends JFrame {
             this.dispose();
         });
         managementButton.addActionListener(e -> {
-            ManagementPage managementPage = new ManagementPage();
-            managementPage.setSize(1, 1);
-            setContentPane(managementPage.getContentPane());
-            managementPage.setVisible(true);
-            managementPage.setContentPane(managementPage.getContentPane());
-            this.dispose();
+
+            clientsButton.setText("Already Here :)");
         });
     }
 
     @Override
     public Container getContentPane() {
-        setTitle("Main Page");
+        setTitle("Management Page");
         setSize(650, 650);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
-        setContentPane(mainPageMainPanel);
-        return mainPageMainPanel;
+        setContentPane(managementPageMainPanel);
+        return managementPageMainPanel;
     }
+
+
 }

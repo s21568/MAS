@@ -90,4 +90,14 @@ public class Zajecia {
     public void setDostepTylkoDlaDoroslych(boolean dostepTylkoDlaDoroslych) {
         this.dostepTylkoDlaDoroslych = dostepTylkoDlaDoroslych;
     }
+    public String[] info() {
+        String[] tmp = new String[8];
+        tmp[0] = String.valueOf(getId());
+        tmp[1] = getNazwa();
+        tmp[2] = getDataOdbywania().toString();
+        tmp[3] = getOpis();
+        tmp[4] = String.valueOf(getIdKlubu());
+        tmp[5] = String.valueOf(isDostepTylkoDlaDoroslych());
+        return tmp;
+    }
 }

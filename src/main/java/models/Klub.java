@@ -9,7 +9,7 @@ import java.util.Date;
 public class Klub {
     @Id
     @GeneratedValue(generator = "increment")
-    @GenericGenerator(name = "increment",strategy = "increment")
+    @GenericGenerator(name = "increment", strategy = "increment")
     private long id;
     private Date dataOtwarcia;
     private Date godzinaOtwarcia;
@@ -67,5 +67,15 @@ public class Klub {
 
     public void setGodzinaZamkniecia(Date godzinaZamkniecia) {
         this.godzinaZamkniecia = godzinaZamkniecia;
+    }
+
+    public String[] info() {
+        String[] tmp = new String[6];
+        tmp[0] = String.valueOf(getId());
+        tmp[1] = getDataOtwarcia().toString();
+        tmp[2] = godzinaOtwarcia.toString();
+        tmp[3] = godzinaZamkniecia.toString();
+        tmp[4] = getAdres().pokazInfo();
+        return tmp;
     }
 }

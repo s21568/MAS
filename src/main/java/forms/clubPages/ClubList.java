@@ -1,6 +1,11 @@
-package forms;
+package forms.clubPages;
 
-import models.Klient;
+import forms.classPages.ClassList;
+import forms.clientPages.ClientList;
+import forms.MainPage;
+import forms.employeePages.EmployeeList;
+import forms.managementPages.ManagementPage;
+import models.Klub;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
@@ -12,8 +17,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-public class ClientList extends JFrame {
-    private JPanel clientListMainPanel;
+public class ClubList  extends JFrame{
     private JScrollPane scrollPanel;
     private JTable clientTableList;
     private JPanel topPanel;
@@ -32,50 +36,69 @@ public class ClientList extends JFrame {
     private JButton clubsButton;
     private JButton classesButton;
     private JButton managementButton;
+    private JPanel clubListMainPanel;
 
-    public ClientList() {
-        setTitle("Client List");
+    public ClubList() {
+        setTitle("Club List");
         setSize(650, 650);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
-        setContentPane(clientListMainPanel);
+        setContentPane(clubListMainPanel);
         clientTableList.setModel(populateClientTableModel());
-        clientsButton.addActionListener(
-                e -> {
-
-                    clientsButton.setText("Already Here :)");
-                }
-        );
+        clientsButton.addActionListener(e -> {
+            ClientList clientList = new ClientList();
+            clientList.setSize(1, 1);
+            setContentPane(clientList.getContentPane());
+            clientList.setVisible(true);
+            clientList.setContentPane(clientList.getContentPane());
+            this.dispose();
+        });
         mainButton.addActionListener(e -> {
-            MainPage mainPage= new MainPage();
-            mainPage.setSize(1,1);
+            MainPage mainPage = new MainPage();
+            mainPage.setSize(1, 1);
             setContentPane(mainPage.getContentPane());
             mainPage.setVisible(true);
             mainPage.setContentPane(mainPage.getContentPane());
             this.dispose();
         });
         employeesButton.addActionListener(e -> {
-
+            EmployeeList employeeList = new EmployeeList();
+            employeeList.setSize(1, 1);
+            setContentPane(employeeList.getContentPane());
+            employeeList.setVisible(true);
+            employeeList.setContentPane(employeeList.getContentPane());
+            this.dispose();
         });
         clubsButton.addActionListener(e -> {
 
+            clientsButton.setText("Already Here :)");
         });
         classesButton.addActionListener(e -> {
-
+            ClassList classList = new ClassList();
+            classList.setSize(1, 1);
+            setContentPane(classList.getContentPane());
+            classList.setVisible(true);
+            classList.setContentPane(classList.getContentPane());
+            this.dispose();
         });
         managementButton.addActionListener(e -> {
-
+            ManagementPage managementPage = new ManagementPage();
+            managementPage.setSize(1, 1);
+            setContentPane(managementPage.getContentPane());
+            managementPage.setVisible(true);
+            managementPage.setContentPane(managementPage.getContentPane());
+            this.dispose();
         });
     }
 
     @Override
     public Container getContentPane() {
-        setTitle("Client List");
+        setTitle("Club List");
         setSize(650, 650);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
-        setContentPane(clientListMainPanel);
-        return clientListMainPanel;
+        setContentPane(clubListMainPanel);
+        return clubListMainPanel;
     }
 
     public DefaultTableModel populateClientTableModel() {
@@ -92,16 +115,13 @@ public class ClientList extends JFrame {
             Session session = sessionFactory.openSession();
             session.beginTransaction();
             model.addColumn("Id");
-            model.addColumn("Imie");
-            model.addColumn("Nazwisko");
-            model.addColumn("DataUrodzenia");
-            model.addColumn("NumerTelefonu");
-            model.addColumn("Email");
-            model.addColumn("IlośćSesji");
+            model.addColumn("DataOtwarcia");
+            model.addColumn("GodzinaOtwarcia");
+            model.addColumn("GodzinaZamkniecia");
             model.addColumn("Adres");
 
-            List<Klient> klientList = session.createQuery("from klient").list();
-            for (Klient x : klientList) {
+            List<Klub> klubList = session.createQuery("from klub ").list();
+            for (Klub x : klubList) {
                 model.addRow(x.info());
             }
             session.getTransaction().commit();
@@ -116,5 +136,4 @@ public class ClientList extends JFrame {
         }
         return model;
     }
-
 }

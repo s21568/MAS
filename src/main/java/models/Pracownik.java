@@ -60,5 +60,17 @@ public abstract class Pracownik extends Osoba {
     public String pokazInfo() {
         return ":" + super.pokazInfo() + " " + pensja;
     }
-
+    public String[] info() {
+        String[] tmp = new String[9];
+        tmp[0] = String.valueOf(getId());
+        tmp[1] = getImie();
+        tmp[2] = getNazwisko();
+        tmp[3] = getDataUrodzenia().toString();
+        tmp[4] = String.valueOf(getNumerTelefonu());
+        tmp[5] = getEmail();
+        tmp[6] = getAdres().pokazInfo();
+        tmp[7] = getDataZatrudnienia().toString();
+        tmp[8]= String.valueOf(getPensja());
+        return tmp;
+    }
 }
