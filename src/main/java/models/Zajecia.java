@@ -20,27 +20,27 @@ public class Zajecia {
     @ManyToOne
     private Klub idKlubu;
     @ManyToMany
-    private List<Okres> listaOkresow;
+    private List<Trener> listaTrenerow;
 
-    public Zajecia(int id, String nazwa, String opis, Date dataOdbywania, boolean dostepTylkoDlaDoroslych, Klub idKlubu, List<Okres> listaOkresow) {
+    public Zajecia(int id, String nazwa, String opis, Date dataOdbywania, boolean dostepTylkoDlaDoroslych, Klub idKlubu, List<Trener> listaTrenerow) {
         this.id = id;
         this.nazwa = nazwa;
         this.opis = opis;
         this.dataOdbywania = dataOdbywania;
         this.dostepTylkoDlaDoroslych = dostepTylkoDlaDoroslych;
         this.idKlubu = idKlubu;
-        this.listaOkresow = listaOkresow;
+        this.listaTrenerow = listaTrenerow;
     }
 
     public Zajecia() {
     }
 
-    public List<Okres> getListaOkresow() {
-        return listaOkresow;
+    public List<Trener> getListaTrenerow() {
+        return listaTrenerow;
     }
 
-    public void setListaOkresow(List<Okres> listaOkresow) {
-        this.listaOkresow = listaOkresow;
+    public void setListaTrenerow(List<Trener> listaTrenerow) {
+        this.listaTrenerow = listaTrenerow;
     }
 
     public void setId(int id) {

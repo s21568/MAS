@@ -1,5 +1,5 @@
 package models;
 
-enum PakietNazwa {
+public enum PakietNazwa {
     Normal, VIP, VIP_GOLD
 }

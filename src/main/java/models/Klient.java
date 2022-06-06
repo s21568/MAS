@@ -34,6 +34,19 @@ public class Klient extends Osoba {
     }
 
     public String pokazInfo() {
-        return  ":" + super.pokazInfo();
+        return ":" + super.pokazInfo();
+    }
+
+    public String[] info() {
+        String[] tmp = new String[8];
+        tmp[0] = String.valueOf(getId());
+        tmp[1] = getImie();
+        tmp[2] = getNazwisko();
+        tmp[3] = getDataUrodzenia().toString();
+        tmp[4] = String.valueOf(getNumerTelefonu());
+        tmp[5] = getEmail();
+        tmp[6] = String.valueOf(getIloscSesji());
+        tmp[7] = getAdres().pokazInfo();
+        return tmp;
     }
 }
