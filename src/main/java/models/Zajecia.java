@@ -3,6 +3,7 @@ package models;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,7 +15,7 @@ public class Zajecia {
     private int id;
     private String nazwa;
     private String opis;
-    private Date dataOdbywania;
+    private LocalDate dataOdbywania;
     private static final int iloscMaxUczestnikow = 128;
     private boolean dostepTylkoDlaDoroslych;
     @ManyToOne
@@ -22,7 +23,7 @@ public class Zajecia {
     @ManyToMany
     private List<Trener> listaTrenerow;
 
-    public Zajecia(int id, String nazwa, String opis, Date dataOdbywania, boolean dostepTylkoDlaDoroslych, Klub idKlubu, List<Trener> listaTrenerow) {
+    public Zajecia(int id, String nazwa, String opis, LocalDate dataOdbywania, boolean dostepTylkoDlaDoroslych, Klub idKlubu, List<Trener> listaTrenerow) {
         this.id = id;
         this.nazwa = nazwa;
         this.opis = opis;
@@ -75,11 +76,11 @@ public class Zajecia {
         this.opis = opis;
     }
 
-    public Date getDataOdbywania() {
+    public LocalDate getDataOdbywania() {
         return dataOdbywania;
     }
 
-    public void setDataOdbywania(Date dataOdbywania) {
+    public void setDataOdbywania(LocalDate dataOdbywania) {
         this.dataOdbywania = dataOdbywania;
     }
 

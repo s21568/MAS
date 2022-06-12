@@ -3,14 +3,15 @@ package models;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 @Entity(name = "recepcjonistka")
 public class Recepcjonistka extends Pracownik {
 
     private double dodatekWydajnosciowy;
 
-    public Recepcjonistka(long id, String imie, String nazwisko, String email, Date dataUrodzenia, int numerTelefonu, Adres adres, Double pensja, Date dataZatrudnienia, double dodatekWydajnosciowy) {
-        super(id, imie, nazwisko, email, dataUrodzenia, numerTelefonu, adres, pensja, dataZatrudnienia);
+    public Recepcjonistka(long id, String imie, String nazwisko, String email, LocalDate dataUrodzenia, int numerTelefonu, Adres adres, Long idPracownika, LocalDate dataZatrudnienia, Double pensja, double dodatekWydajnosciowy) {
+        super(id, imie, nazwisko, email, dataUrodzenia, numerTelefonu, adres, idPracownika, dataZatrudnienia, pensja);
         this.dodatekWydajnosciowy = dodatekWydajnosciowy;
     }
 

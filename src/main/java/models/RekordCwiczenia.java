@@ -3,6 +3,7 @@ package models;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.*;
 @Entity(name = "rekord_cwiczenia")
 public class RekordCwiczenia {
@@ -13,16 +14,16 @@ public class RekordCwiczenia {
     private String nazwaCwiczenia;
     private double iloscKg;
     private int iloscPowtorzen;
-    private Date dataDodania;
+    private LocalDate dataDodania;
     @ManyToOne
     private Klient idKlienta;
 
-    public RekordCwiczenia(long id, String nazwaCwiczenia, double iloscKg, int iloscPowtorzen, Date dataDodania, Klient idKlienta) {
+    public RekordCwiczenia(long id, String nazwaCwiczenia, double iloscKg, int iloscPowtorzen, LocalDate dataDodania, Klient idKlienta) {
         this.id = id;
         this.nazwaCwiczenia = nazwaCwiczenia;
         this.iloscKg = iloscKg;
         this.iloscPowtorzen = iloscPowtorzen;
-        this.dataDodania = new Date();
+        this.dataDodania = LocalDate.now();
         this.idKlienta = idKlienta;
     }
 
@@ -37,7 +38,7 @@ public class RekordCwiczenia {
         this.nazwaCwiczenia = nazwaCwiczenia;
     }
 
-    public void setDataDodania(Date dataDodania) {
+    public void setDataDodania(LocalDate dataDodania) {
         this.dataDodania = dataDodania;
     }
 
@@ -57,7 +58,7 @@ public class RekordCwiczenia {
         this.idKlienta = idKlienta;
     }
 
-    public Date getDataDodania() {
+    public LocalDate getDataDodania() {
         return dataDodania;
     }
 

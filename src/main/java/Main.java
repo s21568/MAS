@@ -1,6 +1,14 @@
 
 
 import forms.MainPage;
+import models.Pracownik;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -17,11 +25,9 @@ public class Main {
 //                    .buildSessionFactory();
 //            Session session = sessionFactory.openSession();
 //            session.beginTransaction();
-//            List<Pracownik> list=session.createQuery("from pracownik ").list();
-//            for (Pracownik x:list
-//                 ) {
-//                System.out.println(Arrays.toString(x.info()));
-//            }
+//
+//            List<Pracownik> pracowniks=session.createQuery("from ");
+//
 //            session.getTransaction().commit();
 //            session.close();
 //        } catch (Exception e) {

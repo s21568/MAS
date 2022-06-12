@@ -3,23 +3,36 @@ package models;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Entity(name = "klient")
 public class Klient extends Osoba {
+
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(name = "increment",strategy = "increment")
+    private Long idKarnetu;
     private int iloscSesji;
 
 
-    public Klient(long id, String imie, String nazwisko, String email, Date dataUrodzenia, int numerTelefonu, Adres adres) {
+    public Klient(long id, String imie, String nazwisko, String email, LocalDate dataUrodzenia, int numerTelefonu, Adres adres, Long idKarnetu, int iloscSesji) {
         super(id, imie, nazwisko, email, dataUrodzenia, numerTelefonu, adres);
-        this.iloscSesji = 0;
+        this.idKarnetu = idKarnetu;
+        this.iloscSesji = iloscSesji;
     }
 
     public Klient() {
     }
 
+    public Long getIdKarnetu() {
+        return idKarnetu;
+    }
+
+    public void setIdKarnetu(Long idKarnetu) {
+        this.idKarnetu = idKarnetu;
+    }
 
     public int getIloscSesji() {
         return iloscSesji;
@@ -27,10 +40,6 @@ public class Klient extends Osoba {
 
     public void setIloscSesji(int iloscSesji) {
         this.iloscSesji = iloscSesji;
-    }
-
-    public int sprawdzIloscSesji() {
-        return iloscSesji;
     }
 
     public String pokazInfo() {

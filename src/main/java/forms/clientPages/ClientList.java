@@ -40,9 +40,9 @@ public class ClientList extends JFrame {
 
     public ClientList() {
         setTitle("Client List");
-        setSize(650, 650);
+//        setSize(650, 650);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setVisible(true);
+//        setVisible(true);
         setContentPane(clientListMainPanel);
         clientTableList.setModel(populateClientTableModel());
         clientsButton.addActionListener(e -> {

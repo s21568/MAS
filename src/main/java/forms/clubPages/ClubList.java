@@ -40,9 +40,9 @@ public class ClubList  extends JFrame{
 
     public ClubList() {
         setTitle("Club List");
-        setSize(650, 650);
+//        setSize(650, 650);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setVisible(true);
+//        setVisible(true);
         setContentPane(clubListMainPanel);
         clientTableList.setModel(populateClientTableModel());
         clientsButton.addActionListener(e -> {
@@ -71,7 +71,7 @@ public class ClubList  extends JFrame{
         });
         clubsButton.addActionListener(e -> {
 
-            clientsButton.setText("Already Here :)");
+            clubsButton.setText("Already Here :)");
         });
         classesButton.addActionListener(e -> {
             ClassList classList = new ClassList();

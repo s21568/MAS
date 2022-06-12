@@ -10,7 +10,7 @@ public class Pakiet {
     @GeneratedValue(generator = "increment")
     @GenericGenerator(name = "increment",strategy = "increment")
     private long id;
-    private String nazwa;
+    private Enum<PakietNazwa> nazwa;
     private boolean napoje;
     private boolean sauna;
     private boolean solarium;
@@ -19,7 +19,7 @@ public class Pakiet {
 
     public Pakiet(long id,Enum<PakietNazwa> nazwa, boolean napoje, boolean sauna, boolean solarium, boolean masaze, boolean sesjePrywatneZTrenerem) {
         this.id=id;
-        this.nazwa = nazwa.name();
+        this.nazwa = nazwa;
         this.napoje = napoje;
         this.sauna = sauna;
         this.solarium = solarium;
@@ -37,11 +37,11 @@ public class Pakiet {
     public long getId() {return id;}
 
     public String getNazwa() {
-        return nazwa;
+        return nazwa.name();
     }
 
     public void setNazwa(Enum<PakietNazwa> nazwa) {
-        this.nazwa = nazwa.name();
+        this.nazwa = nazwa;
     }
 
     public boolean isNapoje() {

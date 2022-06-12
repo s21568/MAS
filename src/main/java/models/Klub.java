@@ -3,6 +3,7 @@ package models;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity(name = "klub")
@@ -11,13 +12,13 @@ public class Klub {
     @GeneratedValue(generator = "increment")
     @GenericGenerator(name = "increment", strategy = "increment")
     private long id;
-    private Date dataOtwarcia;
-    private Date godzinaOtwarcia;
-    private Date godzinaZamkniecia;
+    private LocalDate dataOtwarcia;
+    private LocalDate godzinaOtwarcia;
+    private LocalDate godzinaZamkniecia;
     @ManyToOne
     private Adres adres;
 
-    public Klub(long id, Adres adres, Date dataOtwarcia, Date godzinaOtwarcia, Date godzinaZamkniecia) {
+    public Klub(long id, Adres adres, LocalDate dataOtwarcia, LocalDate godzinaOtwarcia, LocalDate godzinaZamkniecia) {
         this.id = id;
         this.adres = adres;
         this.dataOtwarcia = dataOtwarcia;
@@ -45,27 +46,27 @@ public class Klub {
         this.adres = adres;
     }
 
-    public Date getDataOtwarcia() {
+    public LocalDate getDataOtwarcia() {
         return dataOtwarcia;
     }
 
-    public void setDataOtwarcia(Date dataOtwarcia) {
+    public void setDataOtwarcia(LocalDate dataOtwarcia) {
         this.dataOtwarcia = dataOtwarcia;
     }
 
-    public Date getGodzinaOtwarcia() {
+    public LocalDate getGodzinaOtwarcia() {
         return godzinaOtwarcia;
     }
 
-    public void setGodzinaOtwarcia(Date godzinaOtwarcia) {
+    public void setGodzinaOtwarcia(LocalDate godzinaOtwarcia) {
         this.godzinaOtwarcia = godzinaOtwarcia;
     }
 
-    public Date getGodzinaZamkniecia() {
+    public LocalDate getGodzinaZamkniecia() {
         return godzinaZamkniecia;
     }
 
-    public void setGodzinaZamkniecia(Date godzinaZamkniecia) {
+    public void setGodzinaZamkniecia(LocalDate godzinaZamkniecia) {
         this.godzinaZamkniecia = godzinaZamkniecia;
     }
 

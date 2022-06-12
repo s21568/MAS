@@ -3,29 +3,40 @@ package models;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.*;
 @Entity(name = "pracownik")
 public abstract class Pracownik extends Osoba {
-    private Date dataZatrudnienia;
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(name = "increment",strategy = "increment")
+    private Long idPracownika;
+    private LocalDate dataZatrudnienia;
     private Double pensja;
     abstract Double obliczDodatek();
 
-    public Pracownik(long id, String imie, String nazwisko, String email, Date dataUrodzenia, int numerTelefonu, Adres adres, Double pensja, Date dataZatrudnienia) {
+    public Pracownik(long id, String imie, String nazwisko, String email, LocalDate dataUrodzenia, int numerTelefonu, Adres adres, Long idPracownika, LocalDate dataZatrudnienia, Double pensja) {
         super(id, imie, nazwisko, email, dataUrodzenia, numerTelefonu, adres);
-        this.pensja = pensja;
+        this.idPracownika = idPracownika;
         this.dataZatrudnienia = dataZatrudnienia;
-
+        this.pensja = pensja;
     }
 
     public Pracownik() {
-
     }
 
-    public Date getDataZatrudnienia() {
+    public Long getIdPracownika() {
+        return idPracownika;
+    }
+
+    public void setIdPracownika(Long idPracownika) {
+        this.idPracownika = idPracownika;
+    }
+
+    public LocalDate getDataZatrudnienia() {
         return dataZatrudnienia;
     }
 
-    public void setDataZatrudnienia(Date dataZatrudnienia) {
+    public void setDataZatrudnienia(LocalDate dataZatrudnienia) {
         this.dataZatrudnienia = dataZatrudnienia;
     }
 
@@ -35,26 +46,6 @@ public abstract class Pracownik extends Osoba {
 
     public void setPensja(Double pensja) {
         this.pensja = pensja;
-    }
-
-    public static void obliczPensje(double procent) {
-//        System.out.println("=======podwyzkaInflacjna " + procent + "%=======");
-//        for (Pracownik p : extent) {
-//            p.setPensja(p.pensja * (1 + procent / 100));
-//        }
-    }
-
-    public static void znajdzNajdluzszyStaz() {
-//        System.out.println("=======najdluzszyStaz=======");
-//        try {
-//            Date tmpdata = Collections.min(extent, Comparator.comparing(Pracownik::getDataZatrudnienia)).dataZatrudnienia;
-//
-//        for (Pracownik p : extent) {
-//            if (p.dataZatrudnienia.equals(tmpdata)) {
-//                System.out.println(p.pokazInfo()+" staż:"+pokazStaz(p));
-//            }
-//        }
-//        }catch (NoSuchElementException ignored){}
     }
 
     public String pokazInfo() {

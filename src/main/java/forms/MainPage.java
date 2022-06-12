@@ -30,10 +30,10 @@ public class MainPage extends JFrame {
 
     public MainPage() {
         setTitle("Main Page");
-        setSize(650, 650);
+//        setSize(650, 650);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setVisible(true);
-        setContentPane(mainPageMainPanel);
+//        setVisible(true);
+        setContentPane(getContentPane());
         clientsButton.addActionListener(e -> {
             ClientList clientList = new ClientList();
             clientList.setSize(1, 1);

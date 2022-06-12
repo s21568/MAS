@@ -3,14 +3,15 @@ package models;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 @Entity(name = "manager")
 public class Manager extends Pracownik{
 
     private double dodatek;
 
-    public Manager(long id, String imie, String nazwisko, String email, Date dataUrodzenia, int numerTelefonu, Adres adres, Double pensja, Date dataZatrudnienia, double dodatek) {
-        super(id, imie, nazwisko, email, dataUrodzenia, numerTelefonu, adres, pensja, dataZatrudnienia);
+    public Manager(long id, String imie, String nazwisko, String email, LocalDate dataUrodzenia, int numerTelefonu, Adres adres, Long idPracownika, LocalDate dataZatrudnienia, Double pensja, double dodatek) {
+        super(id, imie, nazwisko, email, dataUrodzenia, numerTelefonu, adres, idPracownika, dataZatrudnienia, pensja);
         this.dodatek = dodatek;
     }
 

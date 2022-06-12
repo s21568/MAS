@@ -3,6 +3,7 @@ package models;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 @Entity(name = "umowa")
 public class Umowa {
@@ -10,8 +11,8 @@ public class Umowa {
     @GeneratedValue(generator = "increment")
     @GenericGenerator(name = "increment",strategy = "increment")
     private long numerUmowy;
-    private Date dataPodpisaniaUmowy;
-    private Date dataKoncaUmowy;
+    private LocalDate dataPodpisaniaUmowy;
+    private LocalDate dataKoncaUmowy;
     private boolean czyZawieszona;
     @ManyToOne
     private Pracownik idPracownika;
@@ -22,7 +23,7 @@ public class Umowa {
     @ManyToOne
     private Klub klub;
 
-    public Umowa(int numerUmowy, Date dataPodpisaniaUmowy, Date dataKoncaUmowy, Pakiet pakiet, Klub klub, Pracownik idPracownika, Klient idKlienta) {
+    public Umowa(int numerUmowy, LocalDate dataPodpisaniaUmowy, LocalDate dataKoncaUmowy, Pakiet pakiet, Klub klub, Pracownik idPracownika, Klient idKlienta) {
         this.numerUmowy = numerUmowy;
         this.dataPodpisaniaUmowy = dataPodpisaniaUmowy;
         this.dataKoncaUmowy = dataKoncaUmowy;
@@ -41,7 +42,7 @@ public class Umowa {
     }
 
     public void anulujUmowe(){
-        dataKoncaUmowy=new Date();
+        dataKoncaUmowy=LocalDate.now();
     }
 
     public void zawiesUmowe(){
@@ -56,15 +57,15 @@ public class Umowa {
         return numerUmowy;
     }
 
-    public Date getDataPodpisaniaUmowy() {
+    public LocalDate getDataPodpisaniaUmowy() {
         return dataPodpisaniaUmowy;
     }
 
-    public Date getDataKoncaUmowy() {
+    public LocalDate getDataKoncaUmowy() {
         return dataKoncaUmowy;
     }
 
-    public void setDataKoncaUmowy(Date dataKoncaUmowy) {
+    public void setDataKoncaUmowy(LocalDate dataKoncaUmowy) {
         this.dataKoncaUmowy = dataKoncaUmowy;
     }
 

@@ -3,6 +3,7 @@ package models;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,27 +14,27 @@ public class RozliczenieMiesieczne {
     @GeneratedValue(generator = "increment")
     @GenericGenerator(name = "increment",strategy = "increment")
     private long id;
-    private Date miesiacPokrycia;
+    private LocalDate miesiacPokrycia;
     @ManyToMany
     private List<Przychod> listaPrzychodow;
     @ManyToMany
     private List<Koszt> listaKosztow;
     private Double sumaPelnaKosztow;
     private Double sumaPelnaPrzychodow;
-    private Date dataDodania;
+    private LocalDate dataDodania;
     @ManyToOne
     private Manager idManageraAutoryzujacego;
     @ManyToOne
     private Klub idKlubu;
 
-    public RozliczenieMiesieczne(long id, Klub idKlubu, Date miesiacPokrycia, Manager idManageraAutoryzujacego) {
+    public RozliczenieMiesieczne(long id, Klub idKlubu, LocalDate miesiacPokrycia, Manager idManageraAutoryzujacego) {
         this.id = id;
         this.miesiacPokrycia = miesiacPokrycia;
         this.listaPrzychodow = new ArrayList<>();
         this.listaKosztow = new ArrayList<>();
         this.sumaPelnaKosztow = 0.0;
         this.sumaPelnaPrzychodow = 0.0;
-        this.dataDodania = new Date();
+        this.dataDodania = LocalDate.now();
         this.idManageraAutoryzujacego = idManageraAutoryzujacego;
         this.idKlubu = idKlubu;
     }
@@ -53,7 +54,7 @@ public class RozliczenieMiesieczne {
         this.sumaPelnaPrzychodow = sumaPelnaPrzychodow;
     }
 
-    public void setDataDodania(Date dataDodania) {
+    public void setDataDodania(LocalDate dataDodania) {
         this.dataDodania = dataDodania;
     }
 
@@ -77,15 +78,15 @@ public class RozliczenieMiesieczne {
         return sumaPelnaPrzychodow;
     }
 
-    public Date getDataDodania() {
+    public LocalDate getDataDodania() {
         return dataDodania;
     }
 
-    public Date getMiesiacPokrycia() {
+    public LocalDate getMiesiacPokrycia() {
         return miesiacPokrycia;
     }
 
-    public void setMiesiacPokrycia(Date miesiacPokrycia) {
+    public void setMiesiacPokrycia(LocalDate miesiacPokrycia) {
         this.miesiacPokrycia = miesiacPokrycia;
     }
 

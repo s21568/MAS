@@ -3,6 +3,7 @@ package models;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity(name = "osoba")
@@ -14,13 +15,13 @@ public abstract class Osoba {
     private long id;
     private String imie;
     private String nazwisko;
-    private Date dataUrodzenia;
+    private LocalDate dataUrodzenia;
     private String email;
     private int numerTelefonu;
     @ManyToOne
     private Adres adres;
 
-    public Osoba(long id, String imie, String nazwisko, String email, Date dataUrodzenia, int numerTelefonu, Adres adres) {
+    public Osoba(long id, String imie, String nazwisko, String email, LocalDate dataUrodzenia, int numerTelefonu, Adres adres) {
         this.id = id;
         this.imie = imie;
         this.nazwisko = nazwisko;
@@ -74,11 +75,11 @@ public abstract class Osoba {
         this.email = email;
     }
 
-    public Date getDataUrodzenia() {
+    public LocalDate getDataUrodzenia() {
         return dataUrodzenia;
     }
 
-    public void setDataUrodzenia(Date dataUrodzenia) {
+    public void setDataUrodzenia(LocalDate dataUrodzenia) {
         this.dataUrodzenia = dataUrodzenia;
     }
 
@@ -91,7 +92,7 @@ public abstract class Osoba {
     }
 
     public String pokazInfo() {
-        return imie + " " + nazwisko + " " + (dataUrodzenia.getDay() + 1) + "-" + dataUrodzenia.getMonth() + "-" + dataUrodzenia.getYear();
+        return imie + " " + nazwisko + " " + (dataUrodzenia.getDayOfMonth() + 1) + "-" + dataUrodzenia.getMonth() + "-" + dataUrodzenia.getYear();
     }
 }
 

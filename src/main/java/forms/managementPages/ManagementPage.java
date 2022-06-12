@@ -20,7 +20,6 @@ public class ManagementPage  extends JFrame{
     private JLabel emailLabel;
     private JLabel passwordLabel;
     private JScrollPane toolBoxScroll;
-    private JPanel topToolBarPanel;
     private JButton mainButton;
     private JButton clientsButton;
     private JButton employeesButton;
@@ -28,12 +27,15 @@ public class ManagementPage  extends JFrame{
     private JButton classesButton;
     private JButton managementButton;
     private JPanel managementPageMainPanel;
+    private JButton clubsButton1;
+    private JButton clientsButton1;
+    private JButton employeesButton1;
 
     public ManagementPage() {
         setTitle("Management Page");
-        setSize(650, 650);
+//        setSize(650, 650);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setVisible(true);
+//        setVisible(true);
         setContentPane(managementPageMainPanel);
         clientsButton.addActionListener(e -> {
             ClientList clientList = new ClientList();
@@ -77,7 +79,7 @@ public class ManagementPage  extends JFrame{
         });
         managementButton.addActionListener(e -> {
 
-            clientsButton.setText("Already Here :)");
+            managementButton.setText("Already Here :)");
         });
     }
 
@@ -90,6 +92,4 @@ public class ManagementPage  extends JFrame{
         setContentPane(managementPageMainPanel);
         return managementPageMainPanel;
     }
-
-
 }

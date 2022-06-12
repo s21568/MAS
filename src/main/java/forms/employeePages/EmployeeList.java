@@ -40,9 +40,9 @@ public class EmployeeList extends JFrame {
 
     public EmployeeList() {
         setTitle("Employee List");
-        setSize(650, 650);
+//        setSize(650, 650);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setVisible(true);
+//        setVisible(true);
         setContentPane(employeListMainPanel);
         employeeTableList.setModel(populateEmployeeTableModel());
         clientsButton.addActionListener(e -> {
@@ -62,7 +62,7 @@ public class EmployeeList extends JFrame {
             this.dispose();
         });
         employeesButton.addActionListener(e -> {
-            clientsButton.setText("Already Here :)");
+            employeesButton.setText("Already Here :)");
         });
         clubsButton.addActionListener(e -> {
             ClubList clubList = new ClubList();

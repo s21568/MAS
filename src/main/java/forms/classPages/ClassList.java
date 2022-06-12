@@ -40,9 +40,9 @@ public class ClassList extends JFrame {
 
     public ClassList() {
         setTitle("Class List");
-        setSize(650, 650);
+//        setSize(650, 650);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setVisible(true);
+//        setVisible(true);
         setContentPane(classListMainPanel);
         classTableList.setModel(populateClientTableModel());
         clientsButton.addActionListener(e -> {
@@ -80,7 +80,7 @@ public class ClassList extends JFrame {
         });
         classesButton.addActionListener(e -> {
 
-            clientsButton.setText("Already Here :)");
+            classesButton.setText("Already Here :)");
         });
         managementButton.addActionListener(e -> {
             ManagementPage managementPage = new ManagementPage();

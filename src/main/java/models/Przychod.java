@@ -11,12 +11,12 @@ public class Przychod {
     @Id
     @GeneratedValue(generator = "increment")
     @GenericGenerator(name = "increment",strategy = "increment")
-    private int id;
+    private Long id;
     private double wartosc;
     private String nazwa;
-    private int opis;
+    private String opis;
 
-    public Przychod(int id, double wartosc, String nazwa, int opis) {
+    public Przychod(Long id, double wartosc, String nazwa, String opis) {
         this.id = id;
         this.wartosc = wartosc;
         this.nazwa = nazwa;
@@ -26,11 +26,11 @@ public class Przychod {
     public Przychod() {
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -50,11 +50,11 @@ public class Przychod {
         this.nazwa = nazwa;
     }
 
-    public int getOpis() {
+    public String getOpis() {
         return opis;
     }
 
-    public void setOpis(int opis) {
+    public void setOpis(String opis) {
         this.opis = opis;
     }
 }
