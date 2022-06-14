@@ -1,12 +1,11 @@
-package forms.employeePages;
+package forms.managementPages.Clubs;
 
-import forms.SwingUiChanger;
-import forms.classPages.ClassList;
-import forms.clientPages.ClientList;
-import forms.clubPages.ClubList;
 import forms.MainPage;
+import forms.SwingUiChanger;
+import forms.clientPages.ClientList;
 import forms.managementPages.ManagementPage;
-import models.Pracownik;
+import models.Koszt;
+import models.Przychod;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
@@ -18,10 +17,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-public class EmployeeList extends JFrame {
-    private JPanel employeListMainPanel;
-    private JScrollPane scrollPanel;
-    private JTable employeeTableList;
+public class ManagementClubCostsExpensesPage extends JFrame {
+    private JPanel managementPageMainPanel;
     private JPanel topPanel;
     private JPanel LogInPanel;
     private JButton LogIn;
@@ -31,42 +28,33 @@ public class EmployeeList extends JFrame {
     private JLabel emailLabel;
     private JLabel passwordLabel;
     private JScrollPane toolBoxScroll;
-    private JPanel topToolBarPanel;
     private JButton mainButton;
-    private JButton clientsButton;
-    private JButton employeesButton;
-    private JButton clubsButton;
-    private JButton classesButton;
     private JButton managementButton;
+    private JComboBox comboBox1;
+    private JTable expensesTableList;
+    private JButton saveButton;
     private final SwingUiChanger swingUiChanger= new SwingUiChanger();
-
-    public EmployeeList() {
-        setTitle("Employee List");
+    public ManagementClubCostsExpensesPage() {
+        setTitle("Management Clubs Expenses Page");
 //        setSize(650, 650);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 //        setVisible(true);
-        setContentPane(employeListMainPanel);
-        employeeTableList.setModel(populateEmployeeTableModel());
-        clientsButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ClientList()));
+        setContentPane(managementPageMainPanel);
+        expensesTableList.setModel(populateClientTableModel());
         mainButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new MainPage()));
-        employeesButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new EmployeeList()));
-        clubsButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ClubList()));
-        classesButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ClassList()));
         managementButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementPage()));
     }
 
     @Override
     public Container getContentPane() {
-        setTitle("Employee List");
+        setTitle("Management Clubs Expenses Page");
         setSize(650, 650);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
-        setContentPane(employeListMainPanel);
-        employeeTableList.setModel(populateEmployeeTableModel());
-        return employeListMainPanel;
+        setContentPane(managementPageMainPanel);
+        return managementPageMainPanel;
     }
-
-    public DefaultTableModel populateEmployeeTableModel() {
+    public DefaultTableModel populateClientTableModel() {
         DefaultTableModel model = new DefaultTableModel();
         StandardServiceRegistry registry = null;
         SessionFactory sessionFactory = null;
@@ -80,18 +68,13 @@ public class EmployeeList extends JFrame {
             Session session = sessionFactory.openSession();
             session.beginTransaction();
             model.addColumn("Id");
-            model.addColumn("Imie");
-            model.addColumn("Nazwisko");
-            model.addColumn("DataUrodzenia");
-            model.addColumn("NumerTelefonu");
-            model.addColumn("Email");
-            model.addColumn("Adres");
-            model.addColumn("DataZatrudnienia");
-            model.addColumn("Pensja");
+            model.addColumn("Wartośc");
+            model.addColumn("Nazwa");
+            model.addColumn("Opis");
 
-            List<Pracownik> pracownikList = session.createQuery("from pracownik").list();
-            for (Pracownik x : pracownikList) {
-                model.addRow(x.info());
+            List<Koszt> kosztList = session.createQuery("from koszt").list();
+            for (Koszt x : kosztList) {
+                model.addRow(x.getFullInfo());
             }
             session.getTransaction().commit();
             session.close();

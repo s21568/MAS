@@ -12,11 +12,13 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class ManagementClubsPage extends JFrame {
+public class ManagementClubCostsAddPage extends JFrame {
     private JPanel managementPageMainPanel;
     private JPanel topPanel;
     private JPanel LogInPanel;
@@ -29,35 +31,46 @@ public class ManagementClubsPage extends JFrame {
     private JScrollPane toolBoxScroll;
     private JButton mainButton;
     private JButton managementButton;
-    private JButton costsButton;
-    private JButton classesButton1;
-    private JTable clubsTableList;
-    private JComboBox comboBox1;
+    private JButton saveButton;
+    private JComboBox clubComboBox;
+    private JComboBox yearComboBox;
+    private JComboBox monthComboBox;
+    private JLabel date;
+    private JLabel club;
+    private JLabel month;
+    private JLabel year;
     private final SwingUiChanger swingUiChanger= new SwingUiChanger();
 
-    public ManagementClubsPage() {
-        setTitle("Management Clubs Page");
+    public ManagementClubCostsAddPage() {
+        setTitle("Management Clubs Costs Add Page");
 //        setSize(650, 650);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 //        setVisible(true);
         setContentPane(managementPageMainPanel);
-        clubsTableList.setModel(populateClientTableModel());
+        populateComboBoxes();
         mainButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new MainPage()));
         managementButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementPage()));
-        costsButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementClubCostsPage()));
+
+        saveButton.addActionListener(e -> {
+
+            swingUiChanger.changeSwingUi(this, new ManagementClubCostsPage());
+        });
     }
 
-    @Override
-    public Container getContentPane() {
-        setTitle("Management Clubs Page");
-        setSize(650, 650);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setVisible(true);
-        setContentPane(managementPageMainPanel);
-        return managementPageMainPanel;
-    }
-    public DefaultTableModel populateClientTableModel() {
-        DefaultTableModel model = new DefaultTableModel();
+    private void populateComboBoxes() {
+        List<String> months = new ArrayList<>();
+        List<String> years = new ArrayList<>();
+        List<String> clubs = new ArrayList<>();
+        for (int x = 1; x < 13; x++) {
+            if (x < 10) {
+                monthComboBox.addItem("0" + x);
+            } else {
+                monthComboBox.addItem(x);
+            }
+        }
+        for(int x = LocalDateTime.now().getYear()-30;x<=LocalDateTime.now().getYear();x++){
+            yearComboBox.addItem(x);
+        }
         StandardServiceRegistry registry = null;
         SessionFactory sessionFactory = null;
         try {
@@ -69,15 +82,10 @@ public class ManagementClubsPage extends JFrame {
                     .buildSessionFactory();
             Session session = sessionFactory.openSession();
             session.beginTransaction();
-            model.addColumn("Id");
-            model.addColumn("DataOtwarcia");
-            model.addColumn("GodzinaOtwarcia");
-            model.addColumn("GodzinaZamkniecia");
-            model.addColumn("Adres");
 
             List<Klub> klubList = session.createQuery("from klub ").list();
             for (Klub x : klubList) {
-                model.addRow(x.getFullInfo());
+                clubComboBox.addItem(x.getAdres().pokazInfo());
             }
             session.getTransaction().commit();
             session.close();
@@ -89,7 +97,16 @@ public class ManagementClubsPage extends JFrame {
                 sessionFactory.close();
             }
         }
-        return model;
     }
-}
 
+    @Override
+    public Container getContentPane() {
+        setTitle("Management Clubs Costs Add Page");
+        setSize(650, 650);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setVisible(true);
+        setContentPane(managementPageMainPanel);
+        return managementPageMainPanel;
+    }
+
+}

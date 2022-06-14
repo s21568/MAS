@@ -159,7 +159,7 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="2a4b2" class="javax.swing.JButton" binding="clubsButton1" default-binding="true">
+              <component id="2a4b2" class="javax.swing.JButton" binding="clubsManagementButton">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -167,7 +167,7 @@
                   <text value="Clubs"/>
                 </properties>
               </component>
-              <component id="6d845" class="javax.swing.JButton" binding="clientsButton1" default-binding="true">
+              <component id="6d845" class="javax.swing.JButton" binding="clientsManagementButton">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -175,7 +175,7 @@
                   <text value="Clients"/>
                 </properties>
               </component>
-              <component id="d816c" class="javax.swing.JButton" binding="employeesButton1" default-binding="true">
+              <component id="d816c" class="javax.swing.JButton" binding="employeesManagementButton">
                 <constraints>
                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>

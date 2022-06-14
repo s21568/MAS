@@ -1,6 +1,7 @@
 package forms.classPages;
 
 import forms.MainPage;
+import forms.SwingUiChanger;
 import forms.clientPages.ClientList;
 import forms.clubPages.ClubList;
 import forms.employeePages.EmployeeList;
@@ -37,59 +38,19 @@ public class ClassList extends JFrame {
     private JButton classesButton;
     private JButton managementButton;
     private JPanel classListMainPanel;
+    private final SwingUiChanger swingUiChanger = new SwingUiChanger();
 
     public ClassList() {
         setTitle("Class List");
-//        setSize(650, 650);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-//        setVisible(true);
         setContentPane(classListMainPanel);
         classTableList.setModel(populateClientTableModel());
-        clientsButton.addActionListener(e -> {
-            ClientList clientList = new ClientList();
-            clientList.setSize(1, 1);
-            setContentPane(clientList.getContentPane());
-            clientList.setVisible(true);
-            clientList.setContentPane(clientList.getContentPane());
-            this.dispose();
-        });
-        mainButton.addActionListener(e -> {
-            MainPage mainPage = new MainPage();
-            mainPage.setSize(1, 1);
-            setContentPane(mainPage.getContentPane());
-            mainPage.setVisible(true);
-            mainPage.setContentPane(mainPage.getContentPane());
-            this.dispose();
-        });
-        employeesButton.addActionListener(e -> {
-            EmployeeList employeeList = new EmployeeList();
-            employeeList.setSize(1, 1);
-            setContentPane(employeeList.getContentPane());
-            employeeList.setVisible(true);
-            employeeList.setContentPane(employeeList.getContentPane());
-            this.dispose();
-        });
-        clubsButton.addActionListener(e -> {
-            ClubList clubList = new ClubList();
-            clubList.setSize(1, 1);
-            setContentPane(clubList.getContentPane());
-            clubList.setVisible(true);
-            clubList.setContentPane(clubList.getContentPane());
-            this.dispose();
-
-        });
-        classesButton.addActionListener(e -> {
-
-            classesButton.setText("Already Here :)");
-        });
-        managementButton.addActionListener(e -> {
-            ManagementPage managementPage = new ManagementPage();
-            managementPage.setSize(1, 1);
-            setContentPane(managementPage.getContentPane());
-            managementPage.setVisible(true);
-            managementPage.setContentPane(managementPage.getContentPane());
-            this.dispose();
-        });
+        clientsButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ClientList()));
+        mainButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new MainPage()));
+        employeesButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new EmployeeList()));
+        clubsButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ClubList()));
+        classesButton.addActionListener(e -> classesButton.setText("Already Here :)"));
+        managementButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementPage()));
     }
 
     @Override

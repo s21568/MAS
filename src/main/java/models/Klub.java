@@ -4,7 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity(name = "klub")
 public class Klub {
@@ -13,12 +13,12 @@ public class Klub {
     @GenericGenerator(name = "increment", strategy = "increment")
     private long id;
     private LocalDate dataOtwarcia;
-    private LocalDate godzinaOtwarcia;
-    private LocalDate godzinaZamkniecia;
+    private LocalDateTime godzinaOtwarcia;
+    private LocalDateTime godzinaZamkniecia;
     @ManyToOne
     private Adres adres;
 
-    public Klub(long id, Adres adres, LocalDate dataOtwarcia, LocalDate godzinaOtwarcia, LocalDate godzinaZamkniecia) {
+    public Klub(long id, Adres adres, LocalDate dataOtwarcia, LocalDateTime godzinaOtwarcia, LocalDateTime godzinaZamkniecia) {
         this.id = id;
         this.adres = adres;
         this.dataOtwarcia = dataOtwarcia;
@@ -54,23 +54,23 @@ public class Klub {
         this.dataOtwarcia = dataOtwarcia;
     }
 
-    public LocalDate getGodzinaOtwarcia() {
+    public LocalDateTime getGodzinaOtwarcia() {
         return godzinaOtwarcia;
     }
 
-    public void setGodzinaOtwarcia(LocalDate godzinaOtwarcia) {
+    public void setGodzinaOtwarcia(LocalDateTime godzinaOtwarcia) {
         this.godzinaOtwarcia = godzinaOtwarcia;
     }
 
-    public LocalDate getGodzinaZamkniecia() {
+    public LocalDateTime getGodzinaZamkniecia() {
         return godzinaZamkniecia;
     }
 
-    public void setGodzinaZamkniecia(LocalDate godzinaZamkniecia) {
+    public void setGodzinaZamkniecia(LocalDateTime godzinaZamkniecia) {
         this.godzinaZamkniecia = godzinaZamkniecia;
     }
 
-    public String[] info() {
+    public String[] getFullInfo() {
         String[] tmp = new String[6];
         tmp[0] = String.valueOf(getId());
         tmp[1] = getDataOtwarcia().toString();

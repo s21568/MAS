@@ -28,6 +28,27 @@ public class Adres {
         this.numerBudynku = numerBudynku;
     }
 
+    public Adres(long id, String kraj, String wojewodztwo, String miasto, String kodPocztowy, int numerBudynku, String ulica, int numerMieszkania) {
+        this.id = id;
+        this.kraj = kraj;
+        this.wojewodztwo = wojewodztwo;
+        this.miasto = miasto;
+        this.kodPocztowy = kodPocztowy;
+        this.numerBudynku = numerBudynku;
+        this.ulica = ulica;
+        this.numerMieszkania = numerMieszkania;
+    }
+
+    public Adres(long id, String kraj, String wojewodztwo, String miasto, String kodPocztowy, int numerBudynku, String ulica) {
+        this.id = id;
+        this.kraj = kraj;
+        this.wojewodztwo = wojewodztwo;
+        this.miasto = miasto;
+        this.kodPocztowy = kodPocztowy;
+        this.numerBudynku = numerBudynku;
+        this.ulica = ulica;
+    }
+
     public Adres() {
     }
 

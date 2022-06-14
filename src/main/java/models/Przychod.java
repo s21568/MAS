@@ -57,4 +57,12 @@ public class Przychod {
     public void setOpis(String opis) {
         this.opis = opis;
     }
+    public String[] getFullInfo() {
+        String[] tmp = new String[6];
+        tmp[0] = String.valueOf(getId());
+        tmp[1] = String.valueOf(getWartosc());
+        tmp[2] = getNazwa();
+        tmp[3] = getOpis();
+        return tmp;
+    }
 }

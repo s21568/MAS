@@ -20,7 +20,9 @@
         <children>
           <component id="3170e" class="javax.swing.JTable" binding="clientTableList">
             <constraints/>
-            <properties/>
+            <properties>
+              <enabled value="false"/>
+            </properties>
           </component>
         </children>
       </scrollpane>

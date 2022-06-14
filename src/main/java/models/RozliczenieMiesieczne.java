@@ -1,6 +1,11 @@
 package models;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -12,12 +17,12 @@ import java.util.List;
 public class RozliczenieMiesieczne {
     @Id
     @GeneratedValue(generator = "increment")
-    @GenericGenerator(name = "increment",strategy = "increment")
+    @GenericGenerator(name = "increment", strategy = "increment")
     private long id;
     private LocalDate miesiacPokrycia;
-    @ManyToMany
+    @OneToMany
     private List<Przychod> listaPrzychodow;
-    @ManyToMany
+    @OneToMany
     private List<Koszt> listaKosztow;
     private Double sumaPelnaKosztow;
     private Double sumaPelnaPrzychodow;
@@ -32,8 +37,8 @@ public class RozliczenieMiesieczne {
         this.miesiacPokrycia = miesiacPokrycia;
         this.listaPrzychodow = new ArrayList<>();
         this.listaKosztow = new ArrayList<>();
-        this.sumaPelnaKosztow = 0.0;
-        this.sumaPelnaPrzychodow = 0.0;
+        this.sumaPelnaKosztow = getSumaPelnaKosztow();
+        this.sumaPelnaPrzychodow = getSumaPelnaPrzychodow();
         this.dataDodania = LocalDate.now();
         this.idManageraAutoryzujacego = idManageraAutoryzujacego;
         this.idKlubu = idKlubu;
@@ -71,11 +76,24 @@ public class RozliczenieMiesieczne {
     }
 
     public Double getSumaPelnaKosztow() {
-        return sumaPelnaKosztow;
+
+        double sum = 0.0;
+        for (Koszt x : getListaKosztow()) {
+            System.out.println(x.getWartosc());
+            sum += x.getWartosc();
+        }
+        sumaPelnaKosztow=sum;
+        return sum;
     }
 
     public Double getSumaPelnaPrzychodow() {
-        return sumaPelnaPrzychodow;
+        double sum = 0.0;
+        for (Przychod x : getListaPrzychodow()) {
+            System.out.println(x.getWartosc());
+            sum += x.getWartosc();
+        }
+        sumaPelnaPrzychodow=sum;
+        return sum;
     }
 
     public LocalDate getDataDodania() {
@@ -110,7 +128,26 @@ public class RozliczenieMiesieczne {
         return listaKosztow;
     }
 
+    public void addKoszt(Koszt koszt) {
+        listaKosztow.add(koszt);
+    }
+
+    public void addPrzychod(Przychod przychod) {
+        listaPrzychodow.add(przychod);
+    }
+
     public void setListaKosztow(List<Koszt> listaKosztow) {
         this.listaKosztow = listaKosztow;
+    }
+
+    public String[] getFullInfo() {
+        String[] tmp = new String[6];
+        tmp[0] = String.valueOf(getId());
+        tmp[1] = getSumaPelnaKosztow().toString();
+        tmp[2] = getSumaPelnaPrzychodow().toString();
+        tmp[3] = getDataDodania().getMonth().toString();
+        tmp[4] = String.valueOf(getIdManageraAutoryzujacego().getId());
+        tmp[5] = String.valueOf(getIdKlubu().getId());
+        return tmp;
     }
 }
