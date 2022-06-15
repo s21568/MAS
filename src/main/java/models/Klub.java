@@ -71,7 +71,7 @@ public class Klub {
     }
 
     public String[] getFullInfo() {
-        String[] tmp = new String[6];
+        String[] tmp = new String[5];
         tmp[0] = String.valueOf(getId());
         tmp[1] = getDataOtwarcia().toString();
         tmp[2] = godzinaOtwarcia.toString();

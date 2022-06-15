@@ -3,6 +3,7 @@ package forms.managementPages.Clubs.add;
 import forms.MainPage;
 import forms.SwingUiChanger;
 import forms.managementPages.Clubs.list.ManagementClubCostsPage;
+import forms.managementPages.Clubs.list.ManagementClubsPage;
 import forms.managementPages.ManagementPage;
 import models.Klub;
 import models.Manager;
@@ -49,7 +50,7 @@ public class ManagementClubCostsAddPage extends JFrame {
         authManager=manager;
         emailLabel.setText("Welcome "+manager.getImie());
         populateComboBoxes();
-        mainButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new MainPage(manager)));
+        mainButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementClubsPage(manager)));
         managementButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementPage(manager)));
         LogOut.addActionListener(e -> swingUiChanger.changeSwingUi(this, new MainPage()));
         saveButton.addActionListener(x -> {
@@ -64,7 +65,7 @@ public class ManagementClubCostsAddPage extends JFrame {
                                 .buildSessionFactory();
                         Session session = sessionFactory.openSession();
                         session.beginTransaction();
-                        session.save(new RozliczenieMiesieczne(1L,klubList.get(clubComboBox.getSelectedIndex()), LocalDate.of(Integer.parseInt(yearComboBox.getSelectedItem().toString()),Integer.parseInt( monthComboBox.getSelectedItem().toString()),1), (Manager) session.createQuery("from manager where id=1")));
+                        session.save(new RozliczenieMiesieczne(1L,klubList.get(clubComboBox.getSelectedIndex()), LocalDate.of(Integer.parseInt(yearComboBox.getSelectedItem().toString()),Integer.parseInt( monthComboBox.getSelectedItem().toString()),1), manager));
                         session.getTransaction().commit();
                         session.close();
                     } catch (Exception e) {
@@ -75,7 +76,7 @@ public class ManagementClubCostsAddPage extends JFrame {
                             sessionFactory.close();
                         }
                     }
-                    swingUiChanger.changeSwingUi(this, new ManagementClubCostsPage(manager,new ArrayList<>()));
+                    swingUiChanger.changeSwingUi(this, new ManagementClubsPage(manager));
         });
     }
 

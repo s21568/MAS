@@ -133,13 +133,14 @@ public class RozliczenieMiesieczne {
     }
 
     public String[] getFullInfo() {
-        String[] tmp = new String[6];
+        String[] tmp = new String[7];
         tmp[0] = String.valueOf(getId());
         tmp[1] = getSumaPelnaKosztow().toString();
         tmp[2] = getSumaPelnaPrzychodow().toString();
-        tmp[3] = getDataDodania().getMonth().getValue() + "/" + getDataDodania().getYear();
-        tmp[4] = String.valueOf(getIdManageraAutoryzujacego().getId());
-        tmp[5] = String.valueOf(getIdKlubu().getId());
+        tmp[3] = getMiesiacPokrycia().getMonth().getValue() + "/" + getMiesiacPokrycia().getYear();
+        tmp[4] = getDataDodania().getMonth().getValue() + "/" + getDataDodania().getYear();
+        tmp[5] = getIdManageraAutoryzujacego().getId() + ":" + getIdManageraAutoryzujacego().getImie() + " " + getIdManageraAutoryzujacego().getNazwisko();
+        tmp[6] = getIdKlubu().getId() + ":" + getIdKlubu().getAdres().pokazInfo();
         return tmp;
     }
 }

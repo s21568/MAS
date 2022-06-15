@@ -2,6 +2,7 @@ package forms.managementPages.Clubs.list;
 
 import forms.MainPage;
 import forms.SwingUiChanger;
+import forms.managementPages.Clubs.add.ManagementClubCostsAddPage;
 import forms.managementPages.ManagementPage;
 import models.Klub;
 import models.Manager;
@@ -15,6 +16,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ManagementClubsPage extends JFrame {
@@ -30,18 +32,37 @@ public class ManagementClubsPage extends JFrame {
     private JButton classesButton1;
     private JTable clubsTableList;
     private JComboBox comboBox1;
+    private JButton addCosts;
     private final SwingUiChanger swingUiChanger = new SwingUiChanger();
+    private List<Klub> klubList = new ArrayList<>();
     private List<Klub> selectedKlubList = new ArrayList<>();
 
     public ManagementClubsPage(Manager manager) {
         setTitle("Management Clubs Page");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setContentPane(managementPageMainPanel);
-        emailLabel.setText("Welcome "+manager.getImie());
+        emailLabel.setText("Welcome " + manager.getImie());
         clubsTableList.setModel(populateClientTableModel());
+        clubsTableList.setColumnSelectionAllowed(true);
+        clubsTableList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         mainButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new MainPage(manager)));
-        managementButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementPage(manager)));
-        costsButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementClubCostsPage(manager,selectedKlubList)));
+        managementButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementPage(manager)));        addCosts.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementClubCostsAddPage(manager)));
+        addCosts.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementClubCostsAddPage(manager)));
+        costsButton.addActionListener(e -> {
+            int[] selectedRows = clubsTableList.getSelectedRows();
+            if (clubsTableList.getSelectedRowCount() > 0) {
+                for (int x : selectedRows) {
+                    selectedKlubList.add(this.klubList.get(x));
+                }
+                for (Klub x : selectedKlubList) {
+                    System.out.println(Arrays.toString(x.getFullInfo()));
+                }
+                swingUiChanger.changeSwingUi(this, new ManagementClubCostsPage(manager, selectedKlubList));
+            } else {
+                swingUiChanger.changeSwingUi(this, new ManagementClubCostsPage(manager, klubList));
+            }
+
+        });
         LogOut.addActionListener(e -> swingUiChanger.changeSwingUi(this, new MainPage()));
     }
 
@@ -56,7 +77,12 @@ public class ManagementClubsPage extends JFrame {
     }
 
     public DefaultTableModel populateClientTableModel() {
-        DefaultTableModel model = new DefaultTableModel();
+        DefaultTableModel model = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         StandardServiceRegistry registry = null;
         SessionFactory sessionFactory = null;
         try {
@@ -74,7 +100,7 @@ public class ManagementClubsPage extends JFrame {
             model.addColumn("GodzinaZamkniecia");
             model.addColumn("Adres");
 
-            List<Klub> klubList = session.createQuery("from klub ").list();
+            klubList = session.createQuery("from klub").list();
             for (Klub x : klubList) {
                 model.addRow(x.getFullInfo());
             }

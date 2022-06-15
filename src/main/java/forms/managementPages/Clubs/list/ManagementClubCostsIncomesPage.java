@@ -4,6 +4,7 @@ import forms.MainPage;
 import forms.SwingUiChanger;
 import forms.managementPages.Clubs.add.ManagementClubCostsAddIncomes;
 import forms.managementPages.ManagementPage;
+import models.Klub;
 import models.Manager;
 import models.Przychod;
 import models.RozliczenieMiesieczne;
@@ -35,22 +36,29 @@ public class ManagementClubCostsIncomesPage extends JFrame {
     private final SwingUiChanger swingUiChanger = new SwingUiChanger();
     private List<RozliczenieMiesieczne> rozliczenieMiesieczneList;
     private Manager authManager;
+    private List<Klub> klubs;
 
-    public ManagementClubCostsIncomesPage(Manager manager,List<RozliczenieMiesieczne> rozliczenieMiesieczne) {
-        setInitialParametersAndActions();
+    public ManagementClubCostsIncomesPage(Manager manager, List<RozliczenieMiesieczne> rozliczenieMiesieczne, List<Klub> klubList) {
+        authManager = manager;
         rozliczenieMiesieczneList = rozliczenieMiesieczne;
-        authManager=manager;
+        klubs = klubList;
+        setInitialParametersAndActions();
     }
 
     private void setInitialParametersAndActions() {
         setTitle("Management Clubs Incomes Page");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setContentPane(managementPageMainPanel);
-        emailLabel.setText("Welcome "+authManager.getImie());
+        if (rozliczenieMiesieczneList.size() > 1) {
+            addNewIncome.setVisible(false);
+        }
+        emailLabel.setText("Welcome " + authManager.getImie());
         incomesTableList.setModel(populateClientTableModel());
-        mainButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new MainPage(authManager)));
+        mainButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementClubCostsPage(authManager,klubs)));
         managementButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementPage(authManager)));
-        addNewIncome.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementClubCostsAddIncomes(authManager)));
+        addNewIncome.addActionListener(e -> {
+            swingUiChanger.changeSwingUi(this, new ManagementClubCostsAddIncomes(authManager, rozliczenieMiesieczneList, klubs));
+        });
         LogOut.addActionListener(e -> swingUiChanger.changeSwingUi(this, new MainPage()));
     }
 

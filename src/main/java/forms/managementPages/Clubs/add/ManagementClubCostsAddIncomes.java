@@ -2,10 +2,13 @@ package forms.managementPages.Clubs.add;
 
 import forms.MainPage;
 import forms.SwingUiChanger;
+import forms.managementPages.Clubs.list.ManagementClubCostsIncomesPage;
 import forms.managementPages.Clubs.list.ManagementClubCostsPage;
 import forms.managementPages.ManagementPage;
+import models.Klub;
 import models.Manager;
 import models.Przychod;
+import models.RozliczenieMiesieczne;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
@@ -15,6 +18,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ManagementClubCostsAddIncomes extends JFrame {
     private JPanel managementPageMainPanel;
@@ -34,12 +38,12 @@ public class ManagementClubCostsAddIncomes extends JFrame {
     private JButton LogOut;
     private final SwingUiChanger swingUiChanger = new SwingUiChanger();
 
-    public ManagementClubCostsAddIncomes(Manager manager) {
+    public ManagementClubCostsAddIncomes(Manager manager, List<RozliczenieMiesieczne> rozliczenieMiesieczneList, List<Klub> klubList) {
         setTitle("Management Clubs Costs Add Incomes");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setContentPane(managementPageMainPanel);
-        emailLabel.setText("Welcome "+manager.getImie());
-        mainButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new MainPage(manager)));
+        emailLabel.setText("Welcome " + manager.getImie());
+        mainButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementClubCostsIncomesPage(manager, rozliczenieMiesieczneList, klubList)));
         managementButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementPage(manager)));
         LogOut.addActionListener(e -> swingUiChanger.changeSwingUi(this, new MainPage()));
         saveButton.addActionListener(x -> {
@@ -59,7 +63,10 @@ public class ManagementClubCostsAddIncomes extends JFrame {
                                     .buildSessionFactory();
                             Session session = sessionFactory.openSession();
                             session.beginTransaction();
-                            session.save(new Przychod(1L, Double.parseDouble(worthInput.getText()), nameInput.getText(), descriptionInput.getText()));
+                            Przychod tmp = new Przychod(1L, Double.parseDouble(worthInput.getText()), nameInput.getText(), descriptionInput.getText());
+                            session.save(tmp);
+                            rozliczenieMiesieczneList.get(0).addPrzychod(tmp);
+                            session.update(rozliczenieMiesieczneList.get(0));
                             session.getTransaction().commit();
                             session.close();
                         } catch (Exception e) {
@@ -70,7 +77,7 @@ public class ManagementClubCostsAddIncomes extends JFrame {
                                 sessionFactory.close();
                             }
                         }
-                        swingUiChanger.changeSwingUi(this, new ManagementClubCostsPage(manager,new ArrayList<>()));
+                        swingUiChanger.changeSwingUi(this, new ManagementClubCostsIncomesPage(manager, rozliczenieMiesieczneList, klubList));
                     } else {
                         worthLabel.setBackground(Color.RED);
                     }

@@ -17,6 +17,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ManagementClubCostsPage extends JFrame {
@@ -29,26 +30,45 @@ public class ManagementClubCostsPage extends JFrame {
     private JButton expensesButton;
     private JTable clubsMonthlyTableList;
     private JComboBox comboBox1;
-    private JButton addCosts;
     private JPanel LogInPanel;
     private JLabel emailLabel;
     private JButton LogOut;
     private final SwingUiChanger swingUiChanger = new SwingUiChanger();
-    private List<Klub> klubList;
+    private final List<Klub> klubList = new ArrayList<>();
+    private List<RozliczenieMiesieczne> rozliczenieMiesieczneList = new ArrayList<>();
+    private final List<RozliczenieMiesieczne> selectedRozliczenieMiesieczneList = new ArrayList<>();
 
-    public ManagementClubCostsPage(Manager manager,List<Klub> klubList) {
+    public ManagementClubCostsPage(Manager manager, List<Klub> klubList) {
         setTitle("Management Clubs Page");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setContentPane(managementPageMainPanel);
-        emailLabel.setText("Welcome "+manager.getImie());
+        emailLabel.setText("Welcome " + manager.getImie());
+        this.klubList.addAll(klubList);
         clubsMonthlyTableList.setModel(populateClientTableModel());
-        mainButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new MainPage(manager)));
+        clubsMonthlyTableList.setColumnSelectionAllowed(true);
+        clubsMonthlyTableList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        mainButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementClubsPage(manager)));
         managementButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementPage(manager)));
-        incomesButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementClubCostsIncomesPage(manager,new ArrayList<>())));
-        expensesButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementClubCostsExpensesPage(manager,new ArrayList<>())));
-        addCosts.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementClubCostsAddPage(manager)));
+        incomesButton.addActionListener(e -> {
+            int[] selectedRows = clubsMonthlyTableList.getSelectedRows();
+            if (clubsMonthlyTableList.getSelectedRowCount() > 0) {
+                System.out.println(clubsMonthlyTableList.getSelectedRowCount());
+                for (int x : selectedRows) {
+                    selectedRozliczenieMiesieczneList.add(this.rozliczenieMiesieczneList.get(x));
+                }
+                swingUiChanger.changeSwingUi(this, new ManagementClubCostsIncomesPage(manager, selectedRozliczenieMiesieczneList,klubList));
+            }
+        });
+        expensesButton.addActionListener(e -> {
+            int[] selectedRows = clubsMonthlyTableList.getSelectedRows();
+            if (clubsMonthlyTableList.getSelectedRowCount() > 0) {
+                for (int x : selectedRows) {
+                    selectedRozliczenieMiesieczneList.add(this.rozliczenieMiesieczneList.get(x));
+                }
+                swingUiChanger.changeSwingUi(this, new ManagementClubCostsExpensesPage(manager, selectedRozliczenieMiesieczneList,klubList));
+            }
+        });
         LogOut.addActionListener(e -> swingUiChanger.changeSwingUi(this, new MainPage()));
-        this.klubList = klubList;
     }
 
     @Override
@@ -62,7 +82,12 @@ public class ManagementClubCostsPage extends JFrame {
     }
 
     public DefaultTableModel populateClientTableModel() {
-        DefaultTableModel model = new DefaultTableModel();
+        DefaultTableModel model = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         StandardServiceRegistry registry = null;
         SessionFactory sessionFactory = null;
         try {
@@ -77,17 +102,18 @@ public class ManagementClubCostsPage extends JFrame {
             model.addColumn("Id");
             model.addColumn("suma Kosztów");
             model.addColumn("suma Przychodów");
+            model.addColumn("miesiąc pokrycia");
             model.addColumn("data Dodania");
-            model.addColumn("id Managera");
+            model.addColumn("Manager autoryzujący");
             model.addColumn("id Klubu");
-
-            for (Klub klub : klubList) {
-                List<RozliczenieMiesieczne> rozliczenieMiesieczne = session.createQuery("from rozliczenie_miesieczne where idKlubu =:klub").setParameter("klub",klub).list();
-                for (RozliczenieMiesieczne x : rozliczenieMiesieczne) {
-                    model.addRow(x.getFullInfo());
+            rozliczenieMiesieczneList = session.createQuery("from rozliczenie_miesieczne").list();
+            for (RozliczenieMiesieczne x : rozliczenieMiesieczneList) {
+                for (Klub klub : klubList) {
+                    if (x.getIdKlubu().getId() == klub.getId()) {
+                        model.addRow(x.getFullInfo());
+                    }
                 }
             }
-
             session.getTransaction().commit();
             session.close();
         } catch (Exception e) {
