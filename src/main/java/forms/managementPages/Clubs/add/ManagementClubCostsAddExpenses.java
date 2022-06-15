@@ -1,9 +1,8 @@
 package forms.managementPages.Clubs.add;
 
 import forms.MainPage;
-import forms.SwingUiChanger;
+import forms.unilities.SwingUiChanger;
 import forms.managementPages.Clubs.list.ManagementClubCostsExpensesPage;
-import forms.managementPages.Clubs.list.ManagementClubCostsPage;
 import forms.managementPages.ManagementPage;
 import models.Klub;
 import models.Koszt;
@@ -17,7 +16,6 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ManagementClubCostsAddExpenses extends JFrame {

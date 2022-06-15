@@ -7,6 +7,7 @@ import forms.clientPages.ClientList;
 import forms.clubPages.ClubList;
 import forms.employeePages.EmployeeList;
 import forms.managementPages.Clubs.list.ManagementClubsPage;
+import forms.unilities.SwingUiChanger;
 import models.Manager;
 
 import javax.swing.*;

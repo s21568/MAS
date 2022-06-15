@@ -1,7 +1,7 @@
 package forms.managementPages.Clubs.list;
 
 import forms.MainPage;
-import forms.SwingUiChanger;
+import forms.unilities.SwingUiChanger;
 import forms.managementPages.Clubs.add.ManagementClubCostsAddPage;
 import forms.managementPages.ManagementPage;
 import models.Klub;

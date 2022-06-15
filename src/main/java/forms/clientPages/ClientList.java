@@ -1,6 +1,6 @@
 package forms.clientPages;
 
-import forms.SwingUiChanger;
+import forms.unilities.SwingUiChanger;
 import forms.classPages.ClassList;
 import forms.MainPage;
 import forms.clubPages.ClubList;

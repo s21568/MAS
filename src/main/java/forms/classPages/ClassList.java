@@ -1,7 +1,7 @@
 package forms.classPages;
 
 import forms.MainPage;
-import forms.SwingUiChanger;
+import forms.unilities.SwingUiChanger;
 import forms.clientPages.ClientList;
 import forms.clubPages.ClubList;
 import forms.employeePages.EmployeeList;

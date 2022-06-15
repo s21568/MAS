@@ -1,8 +1,7 @@
 package forms.managementPages.Clubs.list;
 
 import forms.MainPage;
-import forms.SwingUiChanger;
-import forms.managementPages.Clubs.add.ManagementClubCostsAddPage;
+import forms.unilities.SwingUiChanger;
 import forms.managementPages.ManagementPage;
 import models.Klub;
 import models.Manager;
@@ -17,7 +16,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ManagementClubCostsPage extends JFrame {
@@ -33,6 +31,7 @@ public class ManagementClubCostsPage extends JFrame {
     private JPanel LogInPanel;
     private JLabel emailLabel;
     private JButton LogOut;
+    private JButton printButton;
     private final SwingUiChanger swingUiChanger = new SwingUiChanger();
     private final List<Klub> klubList = new ArrayList<>();
     private List<RozliczenieMiesieczne> rozliczenieMiesieczneList = new ArrayList<>();

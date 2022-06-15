@@ -1,13 +1,11 @@
 package forms.managementPages.Clubs.add;
 
 import forms.MainPage;
-import forms.SwingUiChanger;
-import forms.managementPages.Clubs.list.ManagementClubCostsPage;
+import forms.unilities.SwingUiChanger;
 import forms.managementPages.Clubs.list.ManagementClubsPage;
 import forms.managementPages.ManagementPage;
 import models.Klub;
 import models.Manager;
-import models.Przychod;
 import models.RozliczenieMiesieczne;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
