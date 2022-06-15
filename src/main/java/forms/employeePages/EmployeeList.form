@@ -158,6 +158,7 @@
                     </constraints>
                     <properties>
                       <text value="Management"/>
+                      <visible value="false"/>
                     </properties>
                   </component>
                 </children>

@@ -1,16 +1,10 @@
 package models;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity(name = "rozliczenie_miesieczne")
@@ -79,20 +73,18 @@ public class RozliczenieMiesieczne {
 
         double sum = 0.0;
         for (Koszt x : getListaKosztow()) {
-            System.out.println(x.getWartosc());
             sum += x.getWartosc();
         }
-        sumaPelnaKosztow=sum;
+        sumaPelnaKosztow = sum;
         return sum;
     }
 
     public Double getSumaPelnaPrzychodow() {
         double sum = 0.0;
         for (Przychod x : getListaPrzychodow()) {
-            System.out.println(x.getWartosc());
             sum += x.getWartosc();
         }
-        sumaPelnaPrzychodow=sum;
+        sumaPelnaPrzychodow = sum;
         return sum;
     }
 
@@ -145,7 +137,7 @@ public class RozliczenieMiesieczne {
         tmp[0] = String.valueOf(getId());
         tmp[1] = getSumaPelnaKosztow().toString();
         tmp[2] = getSumaPelnaPrzychodow().toString();
-        tmp[3] = getDataDodania().getMonth().toString();
+        tmp[3] = getDataDodania().getMonth().getValue() + "/" + getDataDodania().getYear();
         tmp[4] = String.valueOf(getIdManageraAutoryzujacego().getId());
         tmp[5] = String.valueOf(getIdKlubu().getId());
         return tmp;

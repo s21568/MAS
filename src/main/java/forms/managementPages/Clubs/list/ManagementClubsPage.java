@@ -1,10 +1,10 @@
-package forms.managementPages.Clubs;
+package forms.managementPages.Clubs.list;
 
 import forms.MainPage;
 import forms.SwingUiChanger;
-import forms.clientPages.ClientList;
 import forms.managementPages.ManagementPage;
 import models.Klub;
+import models.Manager;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
@@ -14,18 +14,15 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ManagementClubsPage extends JFrame {
     private JPanel managementPageMainPanel;
     private JPanel topPanel;
     private JPanel LogInPanel;
-    private JButton LogIn;
     private JButton LogOut;
-    private JPasswordField passwordField;
-    private JTextField emaliField;
     private JLabel emailLabel;
-    private JLabel passwordLabel;
     private JScrollPane toolBoxScroll;
     private JButton mainButton;
     private JButton managementButton;
@@ -33,18 +30,19 @@ public class ManagementClubsPage extends JFrame {
     private JButton classesButton1;
     private JTable clubsTableList;
     private JComboBox comboBox1;
-    private final SwingUiChanger swingUiChanger= new SwingUiChanger();
+    private final SwingUiChanger swingUiChanger = new SwingUiChanger();
+    private List<Klub> selectedKlubList = new ArrayList<>();
 
-    public ManagementClubsPage() {
+    public ManagementClubsPage(Manager manager) {
         setTitle("Management Clubs Page");
-//        setSize(650, 650);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-//        setVisible(true);
         setContentPane(managementPageMainPanel);
+        emailLabel.setText("Welcome "+manager.getImie());
         clubsTableList.setModel(populateClientTableModel());
-        mainButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new MainPage()));
-        managementButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementPage()));
-        costsButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementClubCostsPage()));
+        mainButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new MainPage(manager)));
+        managementButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementPage(manager)));
+        costsButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementClubCostsPage(manager,selectedKlubList)));
+        LogOut.addActionListener(e -> swingUiChanger.changeSwingUi(this, new MainPage()));
     }
 
     @Override
@@ -56,6 +54,7 @@ public class ManagementClubsPage extends JFrame {
         setContentPane(managementPageMainPanel);
         return managementPageMainPanel;
     }
+
     public DefaultTableModel populateClientTableModel() {
         DefaultTableModel model = new DefaultTableModel();
         StandardServiceRegistry registry = null;
