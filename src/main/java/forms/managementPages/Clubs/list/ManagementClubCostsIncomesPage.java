@@ -13,7 +13,9 @@ import models.Przychod;
 import models.RozliczenieMiesieczne;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -38,10 +40,13 @@ public class ManagementClubCostsIncomesPage extends JFrame {
     private JPanel mainPanel;
     private JButton printButton;
     private final SwingUiChanger swingUiChanger = new SwingUiChanger();
-    private List<RozliczenieMiesieczne> rozliczenieMiesieczneList;
-    private Manager authManager;
-    private List<Klub> klubs;
-    private JFrame jFrame;
+    private final List<RozliczenieMiesieczne> rozliczenieMiesieczneList;
+
+    private final List<Przychod> changedPrzychod = new ArrayList<>();
+    private final Manager authManager;
+    private final List<Klub> klubs;
+    private final JFrame jFrame;
+    private final List<Integer> wrongRows = new ArrayList<>();
 
     public ManagementClubCostsIncomesPage(Manager manager, List<RozliczenieMiesieczne> rozliczenieMiesieczne, List<Klub> klubList) {
         authManager = manager;
@@ -52,8 +57,6 @@ public class ManagementClubCostsIncomesPage extends JFrame {
     }
 
     private void setInitialParametersAndActions() {
-        setTitle("Management Clubs Incomes Page");
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setContentPane(managementPageMainPanel);
         if (rozliczenieMiesieczneList.size() > 1) {
             addNewIncome.setVisible(false);
@@ -62,77 +65,94 @@ public class ManagementClubCostsIncomesPage extends JFrame {
         incomesTableList.setModel(populateClientTableModel());
         mainButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementClubCostsPage(authManager, klubs)));
         managementButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementPage(authManager)));
-        addNewIncome.addActionListener(e -> {
-            swingUiChanger.changeSwingUi(this, new ManagementClubCostsAddIncomes(authManager, rozliczenieMiesieczneList, klubs));
-        });
-        saveButton.addActionListener(e -> saveProgresToDb());
-        printButton.addActionListener(e -> print());
+        addNewIncome.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementClubCostsAddIncomes(authManager, rozliczenieMiesieczneList, klubs)));
+        saveButton.addActionListener(e -> saveProgressToDb());
+        printButton.addActionListener(e -> askToPrint());
         LogOut.addActionListener(e -> swingUiChanger.changeSwingUi(this, new MainPage()));
     }
 
-    private void saveProgresToDb() {
-        List<Przychod> changedPrzychod = new ArrayList<>();
+    private void saveProgressToDb() {
+        int wrong = 0;
+        wrongRows.clear();
         List<Przychod> przychodList = rozliczenieMiesieczneList.get(0).getListaPrzychodow();
         for (int i = 0; i < incomesTableList.getRowCount(); i++) {
+            wrong = 0;
             if (Long.parseLong(incomesTableList.getValueAt(i, 0).toString()) == przychodList.get(i).getId()) {
-                if (Double.parseDouble(incomesTableList.getValueAt(i, 1).toString()) == przychodList.get(i).getWartosc()) {
-                    if (incomesTableList.getValueAt(i, 2).toString().equals(przychodList.get(i).getNazwa())) {
-                        if (incomesTableList.getValueAt(i, 3).toString().equals(przychodList.get(i).getOpis())) {
+                try {
+                    if (Double.parseDouble(incomesTableList.getValueAt(i, 1).toString()) == przychodList.get(i).getWartosc()) {
+                        if (incomesTableList.getValueAt(i, 2).toString().equals(przychodList.get(i).getNazwa())) {
+                            if (!incomesTableList.getValueAt(i, 3).toString().equals(przychodList.get(i).getOpis())) {
+                                if (!changedPrzychod.contains(przychodList.get(i))) {
+                                    przychodList.get(i).setOpis(incomesTableList.getValueAt(i, 3).toString());
+                                    changedPrzychod.add(przychodList.get(i));
+                                } else {
+                                    przychodList.get(i).setOpis(incomesTableList.getValueAt(i, 3).toString());
+                                }
+                            }
                         } else {
                             if (!changedPrzychod.contains(przychodList.get(i))) {
-                                przychodList.get(i).setOpis(incomesTableList.getValueAt(i, 3).toString());
+                                przychodList.get(i).setNazwa(incomesTableList.getValueAt(i, 2).toString());
                                 changedPrzychod.add(przychodList.get(i));
                             } else {
-                                przychodList.get(i).setOpis(incomesTableList.getValueAt(i, 3).toString());
+                                przychodList.get(i).setNazwa(incomesTableList.getValueAt(i, 2).toString());
                             }
                         }
                     } else {
                         if (!changedPrzychod.contains(przychodList.get(i))) {
-                            przychodList.get(i).setNazwa(incomesTableList.getValueAt(i, 2).toString());
+                            przychodList.get(i).setWartosc(Double.parseDouble(incomesTableList.getValueAt(i, 1).toString()));
                             changedPrzychod.add(przychodList.get(i));
-                        } else {
-                            przychodList.get(i).setNazwa(incomesTableList.getValueAt(i, 2).toString());
                         }
                     }
-                } else {
-                    if (!changedPrzychod.contains(przychodList.get(i))) {
-                        przychodList.get(i).setWartosc(Double.parseDouble(incomesTableList.getValueAt(i, 1).toString()));
-                        changedPrzychod.add(przychodList.get(i));
-                    }
+
+                } catch (NumberFormatException e) {
+                    wrong++;
+                    wrongRows.add(i);
+                    this.repaint();
                 }
             }
         }
+        if (wrong == 0) {
+            wrongRows.clear();
+            this.repaint();
+            if (!changedPrzychod.isEmpty())
+                askToSaveIncomes();
+        }
+    }
+
+
+    private void askToSaveIncomes() {
         AskToSaveIncomes askToSaveIncomes = new AskToSaveIncomes(changedPrzychod, rozliczenieMiesieczneList);
         askToSaveIncomes.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
                 e.getWindow().dispose();
-                AskToPrint askToPrint = new AskToPrint(incomesTableList, "INCOMES_" + rozliczenieMiesieczneList.get(0).getMiesiacPokrycia()
-                        + "-" + rozliczenieMiesieczneList.get(0).getIdManageraAutoryzujacego().getImie()
-                        + "_" + rozliczenieMiesieczneList.get(0).getIdManageraAutoryzujacego().getNazwisko()
-                        + "_" + DateTimeFormatter.ofPattern("dd_MM_yyyy").format(LocalDateTime.now()));
-                askToPrint.addWindowListener(new WindowAdapter() {
+                askToPrint().addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosed(WindowEvent e) {
                         e.getWindow().dispose();
-                        AskToContinue askToContinue = new AskToContinue(jFrame, authManager);
-                        askToContinue.addWindowListener(new WindowAdapter() {
-                            @Override
-                            public void windowClosed(WindowEvent e) {
-                                e.getWindow().dispose();
-                            }
-                        });
+                        askToContinue();
                     }
                 });
             }
         });
     }
 
-    private void print() {
-        AskToPrint askToPrint = new AskToPrint(incomesTableList, "INCOMES_" +rozliczenieMiesieczneList.get(0).getMiesiacPokrycia()
+    private void askToContinue() {
+        AskToContinue askToContinue = new AskToContinue(jFrame, authManager);
+        askToContinue.setPrzychodList(changedPrzychod);
+        askToContinue.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                e.getWindow().dispose();
+            }
+        });
+    }
+
+    private AskToPrint askToPrint() {
+        return new AskToPrint(incomesTableList, "INCOMES_" + rozliczenieMiesieczneList.get(0).getMiesiacPokrycia()
                 + "-" + rozliczenieMiesieczneList.get(0).getIdManageraAutoryzujacego().getImie()
                 + "_" + rozliczenieMiesieczneList.get(0).getIdManageraAutoryzujacego().getNazwisko()
-                + "_" + DateTimeFormatter.ofPattern("dd_MM_yyyy").format(LocalDateTime.now()));
+                + "_" + DateTimeFormatter.ofPattern("dd_MM_yyyy_HH_mm").format(LocalDateTime.now()));
     }
 
     @Override
@@ -142,22 +162,39 @@ public class ManagementClubCostsIncomesPage extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
         setContentPane(managementPageMainPanel);
+        incomesTableList.getColumnModel().getColumn(1).setCellRenderer(new WrongCellValueRenderer());
         return managementPageMainPanel;
     }
 
-    public DefaultTableModel populateClientTableModel() {
+    private DefaultTableModel populateClientTableModel() {
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Id");
         model.addColumn("Wartośc");
         model.addColumn("Nazwa");
         model.addColumn("Opis");
-        for (RozliczenieMiesieczne rozliczenieMiesieczne : rozliczenieMiesieczneList) {
-            List<Przychod> przychodList = rozliczenieMiesieczne.getListaPrzychodow();
-            for (Przychod x : przychodList) {
-                model.addRow(x.getFullInfo());
-            }
+        for (Przychod x : rozliczenieMiesieczneList.get(0).getListaPrzychodow()) {
+            model.addRow(x.getFullInfo());
         }
 
         return model;
+    }
+
+    private class WrongCellValueRenderer extends DefaultTableCellRenderer {
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value,
+                                                       boolean isSelected, boolean hasFocus, int row, int col) {
+
+            Component c = super.getTableCellRendererComponent(table, value,
+                    isSelected, hasFocus, row, col);
+            if (wrongRows.contains(row)) {
+                c.setBackground(Color.RED);
+            } else {
+                c.setBackground(Color.WHITE);
+            }
+            if (col == 0) {
+                c.setEnabled(false);
+            }
+            return c;
+        }
     }
 }
