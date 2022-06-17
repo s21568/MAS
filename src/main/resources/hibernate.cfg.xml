@@ -23,7 +23,7 @@
 <!--        <property name="show_sql">true</property>-->
 
         <!-- Drop and re-create the database schema on startup -->
-        <property name="hbm2ddl.auto">validate</property>
+<!--        <property name="hbm2ddl.auto">create</property>-->
         <!-- Enable Hibernate stats in the logs -->
 <!--        <property name="hibernate.generate_statistics">true</property>-->
         <!--       Full names of the annotated entity class -->

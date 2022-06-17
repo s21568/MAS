@@ -48,14 +48,13 @@ public class ManagementClubsPage extends JFrame {
         addCosts.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementClubCostsAddPage(manager)));
         costsButton.addActionListener(e -> {
             if (clubsTableList.getSelectedRowCount() > 0) {
+                System.out.println(clubsTableList.getSelectedRowCount());
                 for (int x : clubsTableList.getSelectedRows()) {
                     selectedKlubList.add(klubList.get(x));
                 }
             } else {
 
-                for(int i=0;i<klubList.size();i++){
-                    selectedKlubList.add(klubList.get(i));
-                }
+                selectedKlubList.addAll(klubList);
             }
             swingUiChanger.changeSwingUi(this, new ManagementClubCostsPage(manager, selectedKlubList));
         });

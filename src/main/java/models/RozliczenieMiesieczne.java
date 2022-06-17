@@ -3,6 +3,7 @@ package models;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +15,9 @@ public class RozliczenieMiesieczne {
     @GenericGenerator(name = "increment", strategy = "increment")
     private long id;
     private LocalDate miesiacPokrycia;
-    @OneToMany(cascade = CascadeType.ALL, fetch= FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Przychod> listaPrzychodow;
-    @OneToMany(cascade = CascadeType.ALL, fetch= FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Koszt> listaKosztow;
     private Double sumaPelnaKosztow;
     private Double sumaPelnaPrzychodow;
@@ -68,7 +69,7 @@ public class RozliczenieMiesieczne {
     public Klub getIdKlubu() {
         return idKlubu;
     }
-
+    @Transactional
     public Double getSumaPelnaKosztow() {
 
         double sum = 0.0;
@@ -78,7 +79,7 @@ public class RozliczenieMiesieczne {
         sumaPelnaKosztow = sum;
         return sum;
     }
-
+    @Transactional
     public Double getSumaPelnaPrzychodow() {
         double sum = 0.0;
         for (Przychod x : getListaPrzychodow()) {
@@ -108,6 +109,7 @@ public class RozliczenieMiesieczne {
         this.idManageraAutoryzujacego = idManageraAutoryzujacego;
     }
 
+    @Transactional
     public List<Przychod> getListaPrzychodow() {
         return listaPrzychodow;
     }
@@ -116,6 +118,7 @@ public class RozliczenieMiesieczne {
         this.listaPrzychodow = listaPrzychodow;
     }
 
+    @Transactional
     public List<Koszt> getListaKosztow() {
         return listaKosztow;
     }
