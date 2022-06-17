@@ -10,8 +10,8 @@ public class Manager extends Pracownik{
 
     private double dodatek;
 
-    public Manager(long id, String imie, String nazwisko, String email, LocalDate dataUrodzenia, int numerTelefonu, Adres adres, Long idPracownika, LocalDate dataZatrudnienia, Double pensja, double dodatek) {
-        super(id, imie, nazwisko, email, dataUrodzenia, numerTelefonu, adres, idPracownika, dataZatrudnienia, pensja);
+    public Manager( String imie, String nazwisko, String email, LocalDate dataUrodzenia, int numerTelefonu, Adres adres, LocalDate dataZatrudnienia, Double pensja, double dodatek) {
+        super( imie, nazwisko, email, dataUrodzenia, numerTelefonu, adres,  dataZatrudnienia, pensja);
         this.dodatek = dodatek;
     }
 

@@ -11,8 +11,8 @@ public class Trener extends Pracownik {
 
     private double dodatekIlosciowy;
 
-    public Trener(long id, String imie, String nazwisko, String email, LocalDate dataUrodzenia, int numerTelefonu, Adres adres, Long idPracownika, LocalDate dataZatrudnienia, Double pensja, Double dodatekIlosciowy) {
-        super(id, imie, nazwisko, email, dataUrodzenia, numerTelefonu, adres, idPracownika, dataZatrudnienia, pensja);
+    public Trener( String imie, String nazwisko, String email, LocalDate dataUrodzenia, int numerTelefonu, Adres adres, LocalDate dataZatrudnienia, Double pensja, Double dodatekIlosciowy) {
+        super( imie, nazwisko, email, dataUrodzenia, numerTelefonu, adres, dataZatrudnienia, pensja);
         this.dodatekIlosciowy = dodatekIlosciowy;
     }
 

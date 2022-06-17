@@ -38,30 +38,26 @@ public class ManagementClubsPage extends JFrame {
     private List<Klub> selectedKlubList = new ArrayList<>();
 
     public ManagementClubsPage(Manager manager) {
-        setTitle("Management Clubs Page");
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setContentPane(managementPageMainPanel);
-        emailLabel.setText("Welcome " + manager.getImie());
         clubsTableList.setModel(populateClientTableModel());
+        emailLabel.setText("Welcome " + manager.getImie());
         clubsTableList.setColumnSelectionAllowed(true);
         clubsTableList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         mainButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new MainPage(manager)));
-        managementButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementPage(manager)));        addCosts.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementClubCostsAddPage(manager)));
+        managementButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementPage(manager)));
         addCosts.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementClubCostsAddPage(manager)));
         costsButton.addActionListener(e -> {
-            int[] selectedRows = clubsTableList.getSelectedRows();
             if (clubsTableList.getSelectedRowCount() > 0) {
-                for (int x : selectedRows) {
-                    selectedKlubList.add(this.klubList.get(x));
+                for (int x : clubsTableList.getSelectedRows()) {
+                    selectedKlubList.add(klubList.get(x));
                 }
-                for (Klub x : selectedKlubList) {
-                    System.out.println(Arrays.toString(x.getFullInfo()));
-                }
-                swingUiChanger.changeSwingUi(this, new ManagementClubCostsPage(manager, selectedKlubList));
             } else {
-                swingUiChanger.changeSwingUi(this, new ManagementClubCostsPage(manager, klubList));
-            }
 
+                for(int i=0;i<klubList.size();i++){
+                    selectedKlubList.add(klubList.get(i));
+                }
+            }
+            swingUiChanger.changeSwingUi(this, new ManagementClubCostsPage(manager, selectedKlubList));
         });
         LogOut.addActionListener(e -> swingUiChanger.changeSwingUi(this, new MainPage()));
     }

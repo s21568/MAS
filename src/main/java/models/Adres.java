@@ -125,6 +125,6 @@ public class Adres {
     }
 
     public String pokazInfo() {
-        return miasto + " " + getUlica() + "" + numerBudynku + " " + getNumerMieszkania();
+        return getMiasto() + " " + getUlica() + "" + getNumerBudynku() + " " + getNumerMieszkania();
     }
 }

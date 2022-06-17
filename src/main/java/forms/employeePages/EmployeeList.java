@@ -7,6 +7,7 @@ import forms.clubPages.ClubList;
 import forms.MainPage;
 import forms.managementPages.ManagementPage;
 import models.Manager;
+import models.Pakiet;
 import models.Pracownik;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -45,9 +46,6 @@ public class EmployeeList extends JFrame {
 
     public EmployeeList() {
         setTitle("Employee List");
-//        setSize(650, 650);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-//        setVisible(true);
         setContentPane(employeListMainPanel);
         employeeTableList.setModel(populateEmployeeTableModel());
         clientsButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ClientList()));
@@ -136,6 +134,11 @@ public class EmployeeList extends JFrame {
             List<Pracownik> pracownikList = session.createQuery("from pracownik").list();
             for (Pracownik x : pracownikList) {
                 model.addRow(x.info());
+            }
+
+            List<Pakiet> pakiets=session.createQuery("from pakiet").list();
+            for (Pakiet x : pakiets) {
+                System.out.println(x.getNazwa());
             }
             session.getTransaction().commit();
             session.close();

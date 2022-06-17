@@ -46,11 +46,10 @@ public class ManagementClubCostsAddExpenses extends JFrame {
         LogOut.addActionListener(e -> swingUiChanger.changeSwingUi(this, new MainPage()));
         saveButton.addActionListener(x -> {
             try{
-
-            if (nameInput.getText() != null) {
-                nameInput.setBackground(Color.BLACK);
+            if (!nameInput.getText().isEmpty()) {
+                nameLabel.setForeground(Color.BLACK);
                 if (Double.parseDouble(worthInput.getText()) >= 0.0) {
-                    worthLabel.setBackground(Color.BLACK);
+                    worthLabel.setForeground(Color.BLACK);
                     StandardServiceRegistry registry = null;
                     SessionFactory sessionFactory = null;
                     try {
@@ -62,9 +61,9 @@ public class ManagementClubCostsAddExpenses extends JFrame {
                                 .buildSessionFactory();
                         Session session = sessionFactory.openSession();
                         session.beginTransaction();
-                        Koszt tmp=new Koszt(1L, Double.parseDouble(worthInput.getText()), nameInput.getText(), descriptionInput.getText());
-                        session.save(tmp);
-                        rozliczenieMiesieczneList.get(0).addKoszt(tmp);
+                        Koszt newKoszt=new Koszt(1L, Double.parseDouble(worthInput.getText()), nameInput.getText(), descriptionInput.getText());
+                        session.save(newKoszt);
+                        rozliczenieMiesieczneList.get(0).addKoszt(newKoszt);
                         rozliczenieMiesieczneList.get(0).getSumaPelnaKosztow();
                         session.update(rozliczenieMiesieczneList.get(0));
                         session.getTransaction().commit();
@@ -79,13 +78,13 @@ public class ManagementClubCostsAddExpenses extends JFrame {
                     }
                     swingUiChanger.changeSwingUi(this, new ManagementClubCostsExpensesPage(manager,rozliczenieMiesieczneList,klubList));
                 } else {
-                    worthLabel.setBackground(Color.RED);
+                    worthLabel.setForeground(Color.RED);
                 }
             } else {
-                nameLabel.setBackground(Color.RED);
+                nameLabel.setForeground(Color.RED);
             }
             }catch (NumberFormatException e){
-                nameInput.setBackground(Color.RED);
+                worthLabel.setForeground(Color.RED);
             }
 
         });

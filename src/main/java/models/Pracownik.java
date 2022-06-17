@@ -1,34 +1,43 @@
 package models;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.*;
+
 @Entity(name = "pracownik")
 public abstract class Pracownik extends Osoba {
-    @GeneratedValue(generator = "increment")
-    @GenericGenerator(name = "increment",strategy = "increment")
-    private Long idPracownika;
+
+
+    private long idPracownika;
     private LocalDate dataZatrudnienia;
     private Double pensja;
+
     abstract Double obliczDodatek();
 
-    public Pracownik(long id, String imie, String nazwisko, String email, LocalDate dataUrodzenia, int numerTelefonu, Adres adres, Long idPracownika, LocalDate dataZatrudnienia, Double pensja) {
-        super(id, imie, nazwisko, email, dataUrodzenia, numerTelefonu, adres);
-        this.idPracownika = idPracownika;
+    public Pracownik( String imie, String nazwisko, String email, LocalDate dataUrodzenia, int numerTelefonu, Adres adres, LocalDate dataZatrudnienia, Double pensja) {
+        super( imie, nazwisko, email, dataUrodzenia, numerTelefonu, adres);
         this.dataZatrudnienia = dataZatrudnienia;
         this.pensja = pensja;
     }
 
+
     public Pracownik() {
     }
 
-    public Long getIdPracownika() {
+    public long getIdPracownika() {
         return idPracownika;
     }
 
-    public void setIdPracownika(Long idPracownika) {
+    public void setIdPracownika(long idPracownika) {
         this.idPracownika = idPracownika;
     }
 
@@ -51,6 +60,7 @@ public abstract class Pracownik extends Osoba {
     public String pokazInfo() {
         return ":" + super.pokazInfo() + " " + pensja;
     }
+
     public String[] info() {
         String[] tmp = new String[9];
         tmp[0] = String.valueOf(getId());
@@ -61,7 +71,7 @@ public abstract class Pracownik extends Osoba {
         tmp[5] = getEmail();
         tmp[6] = getAdres().pokazInfo();
         tmp[7] = getDataZatrudnienia().toString();
-        tmp[8]= String.valueOf(getPensja());
+        tmp[8] = String.valueOf(getPensja());
         return tmp;
     }
 }

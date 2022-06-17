@@ -1,6 +1,13 @@
 package models;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -11,26 +18,42 @@ import java.util.List;
 @Entity(name = "klient")
 public class Klient extends Osoba {
 
-    @GeneratedValue(generator = "increment")
-    @GenericGenerator(name = "increment",strategy = "increment")
-    private Long idKarnetu;
+
+    private long idKarnetu;
     private int iloscSesji;
 
 
-    public Klient(long id, String imie, String nazwisko, String email, LocalDate dataUrodzenia, int numerTelefonu, Adres adres, Long idKarnetu, int iloscSesji) {
-        super(id, imie, nazwisko, email, dataUrodzenia, numerTelefonu, adres);
-        this.idKarnetu = idKarnetu;
-        this.iloscSesji = iloscSesji;
+    public Klient( String imie, String nazwisko, String email, LocalDate dataUrodzenia, int numerTelefonu, Adres adres) {
+        super( imie, nazwisko, email, dataUrodzenia, numerTelefonu, adres);
+        this.iloscSesji = 0;
     }
+
+    public Klient(Manager manager) {
+        super( manager.getImie(), manager.getNazwisko(), manager.getEmail(), manager.getDataUrodzenia(), manager.getNumerTelefonu(), manager.getAdres());
+        this.iloscSesji = 0;
+    }
+
+    public Klient(Trener trener) {
+        super( trener.getImie(), trener.getNazwisko(), trener.getEmail(), trener.getDataUrodzenia(), trener.getNumerTelefonu(), trener.getAdres());
+        this.iloscSesji = 0;
+    }
+
+    public Klient(Recepcjonistka recepcjonistka) {
+        super( recepcjonistka.getImie(), recepcjonistka.getNazwisko(), recepcjonistka.getEmail(), recepcjonistka.getDataUrodzenia(), recepcjonistka.getNumerTelefonu(), recepcjonistka.getAdres());
+        this.iloscSesji = 0;
+    }
+
 
     public Klient() {
     }
 
-    public Long getIdKarnetu() {
+
+
+    public long getIdKarnetu() {
         return idKarnetu;
     }
 
-    public void setIdKarnetu(Long idKarnetu) {
+    public void setIdKarnetu(long idKarnetu) {
         this.idKarnetu = idKarnetu;
     }
 

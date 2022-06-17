@@ -1,5 +1,6 @@
 package forms.clubPages;
 
+import forms.unilities.LogInAuth;
 import forms.unilities.SwingUiChanger;
 import forms.classPages.ClassList;
 import forms.clientPages.ClientList;
@@ -20,7 +21,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClubList  extends JFrame{
+public class ClubList extends JFrame {
     private JScrollPane scrollPanel;
     private JTable clientTableList;
     private JPanel topPanel;
@@ -40,16 +41,11 @@ public class ClubList  extends JFrame{
     private JButton classesButton;
     private JButton managementButton;
     private JPanel clubListMainPanel;
-    private final SwingUiChanger swingUiChanger= new SwingUiChanger();
+    private final SwingUiChanger swingUiChanger = new SwingUiChanger();
     private Manager authmanager;
 
     public ClubList() {
-        setTitle("Club List");
-//        setSize(650, 650);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-//        setVisible(true);
         setContentPane(clubListMainPanel);
-        clientTableList.setModel(populateClientTableModel());
         clientsButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ClientList()));
         mainButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new MainPage()));
         employeesButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new EmployeeList()));
@@ -59,37 +55,15 @@ public class ClubList  extends JFrame{
         LogIn.addActionListener(x -> {
             if (emaliField.getText() != null) {
                 emailLabel.setBackground(Color.BLACK);
-                List<Manager> manager = new ArrayList<>();
-                StandardServiceRegistry registry = null;
-                SessionFactory sessionFactory = null;
-                try {
-                    registry = new StandardServiceRegistryBuilder()
-                            .configure()
-                            .build();
-                    sessionFactory = new MetadataSources(registry)
-                            .buildMetadata()
-                            .buildSessionFactory();
-                    Session session = sessionFactory.openSession();
-                    session.beginTransaction();
-                    manager = session.createQuery("from manager where email=:email").setParameter("email", emaliField.getText()).list();
-                    session.getTransaction().commit();
-                    session.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    StandardServiceRegistryBuilder.destroy(registry);
-                } finally {
-                    if (sessionFactory != null) {
-                        sessionFactory.close();
-                    }
-                }
+                List<Manager> manager = new LogInAuth().chceckCredentials(emaliField.getText());
                 if (!manager.isEmpty()) {
                     authmanager = manager.get(0);
-                    emailLabel.setText("Welcome "+authmanager.getImie());
+                    emailLabel.setText("Welcome " + authmanager.getImie());
                     emaliField.setVisible(false);
                     passwordLabel.setVisible(false);
                     passwordField.setVisible(false);
                     managementButton.setVisible(true);
-                }else {
+                } else {
                     emailLabel.setForeground(Color.RED);
                     emailLabel.setText("No such Manager");
                 }
@@ -106,6 +80,7 @@ public class ClubList  extends JFrame{
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
         setContentPane(clubListMainPanel);
+        clientTableList.setModel(populateClientTableModel());
         return clubListMainPanel;
     }
 

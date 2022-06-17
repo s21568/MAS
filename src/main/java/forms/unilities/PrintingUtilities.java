@@ -15,10 +15,9 @@ import javax.swing.*;
 
 public class PrintingUtilities {
     public void print(JTable jTable, String name) {
-        Document document = new Document(PageSize.A4);
+        Document document = new Document(PageSize.A4.rotate());
         try {
             PdfWriter writer = PdfWriter.getInstance(document, Files.newOutputStream(Paths.get("pdf/"+name+".pdf")));
-
             document.open();
             PdfContentByte cb = writer.getDirectContent();
 

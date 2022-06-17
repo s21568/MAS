@@ -44,10 +44,6 @@ public class ClientList extends JFrame {
     private Manager authmanager;
 
     public ClientList() {
-        setTitle("Client List");
-//        setSize(650, 650);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-//        setVisible(true);
         setContentPane(clientListMainPanel);
         clientTableList.setModel(populateClientTableModel());
         clientsButton.addActionListener(e -> clientsButton.setText("Already Here :)"));

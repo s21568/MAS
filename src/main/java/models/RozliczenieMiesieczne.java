@@ -14,9 +14,9 @@ public class RozliczenieMiesieczne {
     @GenericGenerator(name = "increment", strategy = "increment")
     private long id;
     private LocalDate miesiacPokrycia;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, fetch= FetchType.LAZY)
     private List<Przychod> listaPrzychodow;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, fetch= FetchType.LAZY)
     private List<Koszt> listaKosztow;
     private Double sumaPelnaKosztow;
     private Double sumaPelnaPrzychodow;

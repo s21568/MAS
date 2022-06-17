@@ -4,6 +4,7 @@ import forms.classPages.ClassList;
 import forms.clientPages.ClientList;
 import forms.clubPages.ClubList;
 import forms.managementPages.ManagementPage;
+import forms.unilities.LogInAuth;
 import forms.unilities.SwingUiChanger;
 import models.Manager;
 import org.hibernate.Session;
@@ -35,7 +36,7 @@ public class MainPage extends JFrame {
     private JButton managementButton;
     private JScrollPane toolBoxScroll;
     private JPanel topToolBarPanel;
-    private final SwingUiChanger swingUiChanger= new SwingUiChanger();
+    private final SwingUiChanger swingUiChanger = new SwingUiChanger();
     private Manager authmanager;
 
     public MainPage() {
@@ -43,13 +44,11 @@ public class MainPage extends JFrame {
     }
 
     public MainPage(Manager manager) {
-        authmanager=manager;
+        authmanager = manager;
         setInitialParametersAndActions();
     }
 
-    private void setInitialParametersAndActions(){
-        setTitle("Main Page");
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    private void setInitialParametersAndActions() {
         setContentPane(getContentPane());
         clientsButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ClientList()));
         mainButton.addActionListener(e -> mainButton.setText("Already Here :)"));
@@ -58,8 +57,8 @@ public class MainPage extends JFrame {
         classesButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ClassList()));
         managementButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementPage(authmanager)));
         LogOut.addActionListener(e -> swingUiChanger.changeSwingUi(this, new MainPage()));
-        if(authmanager!=null){
-            emailLabel.setText("Welcome "+authmanager.getImie());
+        if (authmanager != null) {
+            emailLabel.setText("Welcome " + authmanager.getImie());
             emaliField.setVisible(false);
             passwordLabel.setVisible(false);
             passwordField.setVisible(false);
@@ -68,37 +67,16 @@ public class MainPage extends JFrame {
         LogIn.addActionListener(x -> {
             if (emaliField.getText() != null) {
                 emailLabel.setBackground(Color.BLACK);
-                List<Manager> manager = new ArrayList<>();
-                StandardServiceRegistry registry = null;
-                SessionFactory sessionFactory = null;
-                try {
-                    registry = new StandardServiceRegistryBuilder()
-                            .configure()
-                            .build();
-                    sessionFactory = new MetadataSources(registry)
-                            .buildMetadata()
-                            .buildSessionFactory();
-                    Session session = sessionFactory.openSession();
-                    session.beginTransaction();
-                    manager = session.createQuery("from manager where email=:email").setParameter("email", emaliField.getText()).list();
-                    session.getTransaction().commit();
-                    session.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    StandardServiceRegistryBuilder.destroy(registry);
-                } finally {
-                    if (sessionFactory != null) {
-                        sessionFactory.close();
-                    }
-                }
+                List<Manager> manager = new LogInAuth().chceckCredentials(emaliField.getText());
                 if (!manager.isEmpty()) {
                     authmanager = manager.get(0);
-                    emailLabel.setText("Welcome "+authmanager.getImie());
+                    emailLabel.setForeground(Color.BLACK);
+                    emailLabel.setText("Welcome " + authmanager.getImie());
                     emaliField.setVisible(false);
                     passwordLabel.setVisible(false);
                     passwordField.setVisible(false);
                     managementButton.setVisible(true);
-                }else {
+                } else {
                     emailLabel.setForeground(Color.RED);
                     emailLabel.setText("No such Manager");
                 }

@@ -1,6 +1,7 @@
 package forms.classPages;
 
 import forms.MainPage;
+import forms.unilities.LogInAuth;
 import forms.unilities.SwingUiChanger;
 import forms.clientPages.ClientList;
 import forms.clubPages.ClubList;
@@ -44,10 +45,7 @@ public class ClassList extends JFrame {
     private Manager authmanager;
 
     public ClassList() {
-        setTitle("Class List");
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setContentPane(classListMainPanel);
-        classTableList.setModel(populateClientTableModel());
         clientsButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ClientList()));
         mainButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new MainPage()));
         employeesButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new EmployeeList()));
@@ -57,29 +55,7 @@ public class ClassList extends JFrame {
         LogIn.addActionListener(x -> {
             if (emaliField.getText() != null) {
                 emailLabel.setBackground(Color.BLACK);
-                List<Manager> manager = new ArrayList<>();
-                StandardServiceRegistry registry = null;
-                SessionFactory sessionFactory = null;
-                try {
-                    registry = new StandardServiceRegistryBuilder()
-                            .configure()
-                            .build();
-                    sessionFactory = new MetadataSources(registry)
-                            .buildMetadata()
-                            .buildSessionFactory();
-                    Session session = sessionFactory.openSession();
-                    session.beginTransaction();
-                    manager = session.createQuery("from manager where email=:email").setParameter("email", emaliField.getText()).list();
-                    session.getTransaction().commit();
-                    session.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    StandardServiceRegistryBuilder.destroy(registry);
-                } finally {
-                    if (sessionFactory != null) {
-                        sessionFactory.close();
-                    }
-                }
+                List<Manager> manager = new LogInAuth().chceckCredentials(emaliField.getText());
                 if (!manager.isEmpty()) {
                     authmanager = manager.get(0);
                     emailLabel.setText("Welcome "+authmanager.getImie());
@@ -104,6 +80,7 @@ public class ClassList extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
         setContentPane(classListMainPanel);
+        classTableList.setModel(populateClientTableModel());
         return classListMainPanel;
     }
 

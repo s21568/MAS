@@ -1,6 +1,7 @@
 package forms.managementPages.Clubs.list;
 
 import forms.MainPage;
+import forms.popUpMessages.AskToPrint;
 import forms.unilities.SwingUiChanger;
 import forms.managementPages.ManagementPage;
 import models.Klub;
@@ -15,8 +16,11 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ManagementClubCostsPage extends JFrame {
     private JPanel managementPageMainPanel;
@@ -27,17 +31,20 @@ public class ManagementClubCostsPage extends JFrame {
     private JButton incomesButton;
     private JButton expensesButton;
     private JTable clubsMonthlyTableList;
-    private JComboBox comboBox1;
+    private JComboBox yearChooseComboBox;
     private JPanel LogInPanel;
     private JLabel emailLabel;
     private JButton LogOut;
     private JButton printButton;
+    private JComboBox monthComboBox;
     private final SwingUiChanger swingUiChanger = new SwingUiChanger();
     private final List<Klub> klubList = new ArrayList<>();
     private List<RozliczenieMiesieczne> rozliczenieMiesieczneList = new ArrayList<>();
     private final List<RozliczenieMiesieczne> selectedRozliczenieMiesieczneList = new ArrayList<>();
+    private final Manager authmanager;
 
     public ManagementClubCostsPage(Manager manager, List<Klub> klubList) {
+        authmanager = manager;
         setTitle("Management Clubs Page");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setContentPane(managementPageMainPanel);
@@ -49,25 +56,74 @@ public class ManagementClubCostsPage extends JFrame {
         mainButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementClubsPage(manager)));
         managementButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementPage(manager)));
         incomesButton.addActionListener(e -> {
-            int[] selectedRows = clubsMonthlyTableList.getSelectedRows();
             if (clubsMonthlyTableList.getSelectedRowCount() > 0) {
-                System.out.println(clubsMonthlyTableList.getSelectedRowCount());
-                for (int x : selectedRows) {
-                    selectedRozliczenieMiesieczneList.add(this.rozliczenieMiesieczneList.get(x));
-                }
-                swingUiChanger.changeSwingUi(this, new ManagementClubCostsIncomesPage(manager, selectedRozliczenieMiesieczneList,klubList));
+                selectedRozliczenieMiesieczneList.add(rozliczenieMiesieczneList.get(clubsMonthlyTableList.getSelectedRow()));
+                swingUiChanger.changeSwingUi(this, new ManagementClubCostsIncomesPage(manager, selectedRozliczenieMiesieczneList, klubList));
             }
         });
         expensesButton.addActionListener(e -> {
-            int[] selectedRows = clubsMonthlyTableList.getSelectedRows();
             if (clubsMonthlyTableList.getSelectedRowCount() > 0) {
-                for (int x : selectedRows) {
-                    selectedRozliczenieMiesieczneList.add(this.rozliczenieMiesieczneList.get(x));
-                }
-                swingUiChanger.changeSwingUi(this, new ManagementClubCostsExpensesPage(manager, selectedRozliczenieMiesieczneList,klubList));
+                selectedRozliczenieMiesieczneList.add(rozliczenieMiesieczneList.get(clubsMonthlyTableList.getSelectedRow()));
+                swingUiChanger.changeSwingUi(this, new ManagementClubCostsExpensesPage(manager, selectedRozliczenieMiesieczneList, klubList));
             }
+
         });
         LogOut.addActionListener(e -> swingUiChanger.changeSwingUi(this, new MainPage()));
+        printButton.addActionListener(e -> askToPrint());
+        yearChooseComboBox.addActionListener(
+                event -> {
+                    DefaultTableModel model = new DefaultTableModel() {
+                        @Override
+                        public boolean isCellEditable(int row, int column) {
+                            return false;
+                        }
+                    };
+                    model.addColumn("Id");
+                    model.addColumn("suma Kosztów");
+                    model.addColumn("suma Przychodów");
+                    model.addColumn("miesiąc pokrycia");
+                    model.addColumn("data Dodania");
+                    model.addColumn("Manager autoryzujący");
+                    model.addColumn("id Klubu");
+                    String year = Objects.requireNonNull(yearChooseComboBox.getSelectedItem()).toString();
+                    for (RozliczenieMiesieczne rozliczenieMiesieczne : rozliczenieMiesieczneList) {
+                        if (rozliczenieMiesieczne.getMiesiacPokrycia().toString().split("-")[0].equals(year)) {
+                            model.addRow(rozliczenieMiesieczne.getFullInfo());
+                        }
+                    }
+                    clubsMonthlyTableList.setModel(model);
+                });
+        monthComboBox.addActionListener(
+                event -> {
+                    DefaultTableModel model = new DefaultTableModel() {
+                        @Override
+                        public boolean isCellEditable(int row, int column) {
+                            return false;
+                        }
+                    };
+                    model.addColumn("Id");
+                    model.addColumn("suma Kosztów");
+                    model.addColumn("suma Przychodów");
+                    model.addColumn("miesiąc pokrycia");
+                    model.addColumn("data Dodania");
+                    model.addColumn("Manager autoryzujący");
+                    model.addColumn("id Klubu");
+                    String month = Objects.requireNonNull(monthComboBox.getSelectedItem()).toString();
+                    for (RozliczenieMiesieczne rozliczenieMiesieczne : rozliczenieMiesieczneList) {
+                        System.out.println(rozliczenieMiesieczne.getMiesiacPokrycia().toString().split("-")[1] + " " + month);
+                        if (rozliczenieMiesieczne.getMiesiacPokrycia().toString().split("-")[1].equals(month)) {
+                            model.addRow(rozliczenieMiesieczne.getFullInfo());
+                        }
+                    }
+                    clubsMonthlyTableList.setModel(model);
+                });
+    }
+
+    private AskToPrint askToPrint() {
+        return new AskToPrint(clubsMonthlyTableList, "COSTS_"
+                + "-" + authmanager.getImie()
+                + "_" + authmanager.getNazwisko()
+                + "_" + DateTimeFormatter.ofPattern("dd_MM_yyyy_HH_mm").format(LocalDateTime.now()));
     }
 
     @Override
@@ -87,6 +143,16 @@ public class ManagementClubCostsPage extends JFrame {
                 return false;
             }
         };
+        for (int x = LocalDateTime.now().getYear() - 30; x <= LocalDateTime.now().getYear(); x++) {
+            yearChooseComboBox.addItem(x);
+        }
+        model.addColumn("Id");
+        model.addColumn("suma Kosztów");
+        model.addColumn("suma Przychodów");
+        model.addColumn("miesiąc pokrycia");
+        model.addColumn("data Dodania");
+        model.addColumn("Manager autoryzujący");
+        model.addColumn("id Klubu");
         StandardServiceRegistry registry = null;
         SessionFactory sessionFactory = null;
         try {
@@ -98,13 +164,6 @@ public class ManagementClubCostsPage extends JFrame {
                     .buildSessionFactory();
             Session session = sessionFactory.openSession();
             session.beginTransaction();
-            model.addColumn("Id");
-            model.addColumn("suma Kosztów");
-            model.addColumn("suma Przychodów");
-            model.addColumn("miesiąc pokrycia");
-            model.addColumn("data Dodania");
-            model.addColumn("Manager autoryzujący");
-            model.addColumn("id Klubu");
             rozliczenieMiesieczneList = session.createQuery("from rozliczenie_miesieczne").list();
             for (RozliczenieMiesieczne x : rozliczenieMiesieczneList) {
                 for (Klub klub : klubList) {

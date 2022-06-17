@@ -11,7 +11,7 @@ public abstract class Osoba {
 
     @Id
     @GeneratedValue(generator = "increment")
-    @GenericGenerator(name = "increment",strategy = "increment")
+    @GenericGenerator(name = "increment", strategy = "increment")
     private long id;
     private String imie;
     private String nazwisko;
@@ -21,8 +21,7 @@ public abstract class Osoba {
     @ManyToOne
     private Adres adres;
 
-    public Osoba(long id, String imie, String nazwisko, String email, LocalDate dataUrodzenia, int numerTelefonu, Adres adres) {
-        this.id = id;
+    public Osoba( String imie, String nazwisko, String email, LocalDate dataUrodzenia, int numerTelefonu, Adres adres) {
         this.imie = imie;
         this.nazwisko = nazwisko;
         this.email = email;
@@ -33,7 +32,6 @@ public abstract class Osoba {
 
     public Osoba() {
     }
-
 
     public Adres getAdres() {
         return adres;

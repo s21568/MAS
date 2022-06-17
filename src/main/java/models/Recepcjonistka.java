@@ -10,8 +10,8 @@ public class Recepcjonistka extends Pracownik {
 
     private double dodatekWydajnosciowy;
 
-    public Recepcjonistka(long id, String imie, String nazwisko, String email, LocalDate dataUrodzenia, int numerTelefonu, Adres adres, Long idPracownika, LocalDate dataZatrudnienia, Double pensja, double dodatekWydajnosciowy) {
-        super(id, imie, nazwisko, email, dataUrodzenia, numerTelefonu, adres, idPracownika, dataZatrudnienia, pensja);
+    public Recepcjonistka( String imie, String nazwisko, String email, LocalDate dataUrodzenia, int numerTelefonu, Adres adres, LocalDate dataZatrudnienia, Double pensja, double dodatekWydajnosciowy) {
+        super( imie, nazwisko, email, dataUrodzenia, numerTelefonu, adres, dataZatrudnienia, pensja);
         this.dodatekWydajnosciowy = dodatekWydajnosciowy;
     }
 
