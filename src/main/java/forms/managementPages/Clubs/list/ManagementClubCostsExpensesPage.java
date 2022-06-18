@@ -4,6 +4,7 @@ import forms.*;
 import forms.managementPages.Clubs.add.ManagementClubCostsAddExpenses;
 import forms.managementPages.ManagementPage;
 import forms.popUpMessages.AskToContinue;
+import forms.popUpMessages.AskToDelete;
 import forms.popUpMessages.AskToPrint;
 import forms.popUpMessages.AskToSaveExpenses;
 import forms.unilities.SwingUiChanger;
@@ -34,13 +35,14 @@ public class ManagementClubCostsExpensesPage extends JFrame {
     private JLabel emailLabel;
     private JButton LogOut;
     private JButton printButton;
+    private JButton deleteButton;
     private final SwingUiChanger swingUiChanger = new SwingUiChanger();
     private final List<RozliczenieMiesieczne> rozliczenieMiesieczneList;
     private final List<Koszt> changedKoszt = new ArrayList<>();
     private final Manager authManager;
     private final List<Klub> klubs;
     private final JFrame jFrame;
-    private final List<Integer> wrongRows = new ArrayList<>();
+    private final List<Integer> wrongRowsToBeHighlited = new ArrayList<>();
 
     public ManagementClubCostsExpensesPage(Manager manager, List<RozliczenieMiesieczne> rozliczenieMiesiecznes, List<Klub> klubList) {
         rozliczenieMiesieczneList = rozliczenieMiesiecznes;
@@ -61,16 +63,36 @@ public class ManagementClubCostsExpensesPage extends JFrame {
         addNewExpense.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementClubCostsAddExpenses(authManager, rozliczenieMiesieczneList, klubs)));
         LogOut.addActionListener(e -> swingUiChanger.changeSwingUi(this, new MainPage()));
         saveButton.addActionListener(e -> saveProgressToDb());
-        printButton.addActionListener(e -> askToPrint());
+        printButton.addActionListener(e -> {
+            if (checkTableCellsValid())
+                askToPrint();
+        });
         expensesTableList.setModel(populateClientTableModel());
+        deleteButton.addActionListener(e -> {
+            AskToDelete askToDelete = new AskToDelete();
+            Koszt kosztToDelete=rozliczenieMiesieczneList.get(0).getListaKosztow().get(expensesTableList.getSelectedRow());
+            askToDelete.deleteKoszt(rozliczenieMiesieczneList.get(0),kosztToDelete);
+            jFrame.repaint();
+        });
     }
 
     private void saveProgressToDb() {
 
-        int wrong = 0;
-        wrongRows.clear();
+
+        if (checkTableCellsValid()) {
+            wrongRowsToBeHighlited.clear();
+            this.repaint();
+            if (!changedKoszt.isEmpty())
+                askToSaveExpenses();
+        }
+    }
+
+    private boolean checkTableCellsValid() {
+        int wrongInputDataCell = 0;
+        wrongRowsToBeHighlited.clear();
         List<Koszt> kosztList = rozliczenieMiesieczneList.get(0).getListaKosztow();
         for (int i = 0; i < expensesTableList.getRowCount(); i++) {
+            wrongInputDataCell = 0;
             if (Long.parseLong(expensesTableList.getValueAt(i, 0).toString()) == kosztList.get(i).getId()) {
                 try {
                     if (Double.parseDouble(expensesTableList.getValueAt(i, 1).toString()) == kosztList.get(i).getWartosc()) {
@@ -99,18 +121,19 @@ public class ManagementClubCostsExpensesPage extends JFrame {
                     }
 
                 } catch (NumberFormatException e) {
-                    wrong++;
-                    wrongRows.add(i);
+                    wrongInputDataCell++;
+                    wrongRowsToBeHighlited.add(i);
                     this.repaint();
                 }
             }
         }
-
-        if (wrong == 0) {
-            wrongRows.clear();
+        if (wrongInputDataCell == 0) {
+            wrongRowsToBeHighlited.clear();
             this.repaint();
-            if (!changedKoszt.isEmpty())
-                askToSaveExpenses();
+            return true;
+        } else {
+            this.repaint();
+            return false;
         }
     }
 
@@ -166,9 +189,9 @@ public class ManagementClubCostsExpensesPage extends JFrame {
         model.addColumn("Wartośc");
         model.addColumn("Nazwa");
         model.addColumn("Opis");
-            for (Koszt x : rozliczenieMiesieczneList.get(0).getListaKosztow()) {
-                model.addRow(x.getFullInfo());
-            }
+        for (Koszt x : rozliczenieMiesieczneList.get(0).getListaKosztow()) {
+            model.addRow(x.getFullInfo());
+        }
 
         return model;
     }
@@ -180,11 +203,10 @@ public class ManagementClubCostsExpensesPage extends JFrame {
 
             Component c = super.getTableCellRendererComponent(table, value,
                     isSelected, hasFocus, row, col);
-            if (wrongRows.contains(row)) {
+            if (wrongRowsToBeHighlited.contains(row)) {
                 c.setBackground(Color.RED);
-            }
-            if (col == 0) {
-                c.setEnabled(false);
+            } else {
+                c.setBackground(Color.WHITE);
             }
             return c;
         }

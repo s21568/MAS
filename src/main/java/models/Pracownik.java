@@ -23,8 +23,14 @@ public abstract class Pracownik extends Osoba {
 
     abstract Double obliczDodatek();
 
-    public Pracownik( String imie, String nazwisko, String email, LocalDate dataUrodzenia, int numerTelefonu, Adres adres, LocalDate dataZatrudnienia, Double pensja) {
-        super( imie, nazwisko, email, dataUrodzenia, numerTelefonu, adres);
+    public Pracownik(String imie, String nazwisko, String email, LocalDate dataUrodzenia, int numerTelefonu, Adres adres, LocalDate dataZatrudnienia, Double pensja) {
+        super(imie, nazwisko, email, dataUrodzenia, numerTelefonu, adres);
+        this.dataZatrudnienia = dataZatrudnienia;
+        this.pensja = pensja;
+    }
+
+    public Pracownik(Klient klient, LocalDate dataZatrudnienia, Double pensja) {
+        super(klient.getImie(), klient.getNazwisko(), klient.getEmail(), klient.getDataUrodzenia(), klient.getNumerTelefonu(), klient.getAdres());
         this.dataZatrudnienia = dataZatrudnienia;
         this.pensja = pensja;
     }

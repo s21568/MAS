@@ -28,18 +28,8 @@ public class Klient extends Osoba {
         this.iloscSesji = 0;
     }
 
-    public Klient(Manager manager) {
-        super( manager.getImie(), manager.getNazwisko(), manager.getEmail(), manager.getDataUrodzenia(), manager.getNumerTelefonu(), manager.getAdres());
-        this.iloscSesji = 0;
-    }
-
-    public Klient(Trener trener) {
-        super( trener.getImie(), trener.getNazwisko(), trener.getEmail(), trener.getDataUrodzenia(), trener.getNumerTelefonu(), trener.getAdres());
-        this.iloscSesji = 0;
-    }
-
-    public Klient(Recepcjonistka recepcjonistka) {
-        super( recepcjonistka.getImie(), recepcjonistka.getNazwisko(), recepcjonistka.getEmail(), recepcjonistka.getDataUrodzenia(), recepcjonistka.getNumerTelefonu(), recepcjonistka.getAdres());
+    public Klient(Pracownik pracownik) {
+        super( pracownik.getImie(), pracownik.getNazwisko(), pracownik.getEmail(), pracownik.getDataUrodzenia(), pracownik.getNumerTelefonu(), pracownik.getAdres());
         this.iloscSesji = 0;
     }
 

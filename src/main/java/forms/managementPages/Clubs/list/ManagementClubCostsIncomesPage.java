@@ -4,6 +4,7 @@ import forms.*;
 import forms.managementPages.Clubs.add.ManagementClubCostsAddIncomes;
 import forms.managementPages.ManagementPage;
 import forms.popUpMessages.AskToContinue;
+import forms.popUpMessages.AskToDelete;
 import forms.popUpMessages.AskToPrint;
 import forms.popUpMessages.AskToSaveIncomes;
 import forms.unilities.SwingUiChanger;
@@ -15,7 +16,6 @@ import models.RozliczenieMiesieczne;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -39,6 +39,7 @@ public class ManagementClubCostsIncomesPage extends JFrame {
     private JButton LogOut;
     private JPanel mainPanel;
     private JButton printButton;
+    private JButton deleteButton;
     private final SwingUiChanger swingUiChanger = new SwingUiChanger();
     private final List<RozliczenieMiesieczne> rozliczenieMiesieczneList;
 
@@ -46,7 +47,7 @@ public class ManagementClubCostsIncomesPage extends JFrame {
     private final Manager authManager;
     private final List<Klub> klubs;
     private final JFrame jFrame;
-    private final List<Integer> wrongRows = new ArrayList<>();
+    private final List<Integer> wrongRowsToBeHighlited = new ArrayList<>();
 
     public ManagementClubCostsIncomesPage(Manager manager, List<RozliczenieMiesieczne> rozliczenieMiesieczne, List<Klub> klubList) {
         authManager = manager;
@@ -67,16 +68,35 @@ public class ManagementClubCostsIncomesPage extends JFrame {
         managementButton.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementPage(authManager)));
         addNewIncome.addActionListener(e -> swingUiChanger.changeSwingUi(this, new ManagementClubCostsAddIncomes(authManager, rozliczenieMiesieczneList, klubs)));
         saveButton.addActionListener(e -> saveProgressToDb());
-        printButton.addActionListener(e -> askToPrint());
+        printButton.addActionListener(e -> {
+            if (chceckTableCellsValid())
+                askToPrint();
+        });
         LogOut.addActionListener(e -> swingUiChanger.changeSwingUi(this, new MainPage()));
+        deleteButton.addActionListener(e -> {
+            AskToDelete askToDelete= new AskToDelete();
+            Przychod przychodToDelete=rozliczenieMiesieczneList.get(0).getListaPrzychodow().get(incomesTableList.getSelectedRow());
+            askToDelete.deletePrzychod(rozliczenieMiesieczneList.get(0),przychodToDelete);
+            jFrame.repaint();
+        });
     }
 
     private void saveProgressToDb() {
-        int wrong = 0;
-        wrongRows.clear();
+
+        if (chceckTableCellsValid()) {
+            wrongRowsToBeHighlited.clear();
+            this.repaint();
+            if (!changedPrzychod.isEmpty())
+                askToSaveIncomes();
+        }
+    }
+
+    private boolean chceckTableCellsValid() {
+        int wrongInputDataCell = 0;
+        wrongRowsToBeHighlited.clear();
         List<Przychod> przychodList = rozliczenieMiesieczneList.get(0).getListaPrzychodow();
         for (int i = 0; i < incomesTableList.getRowCount(); i++) {
-            wrong = 0;
+            wrongInputDataCell = 0;
             if (Long.parseLong(incomesTableList.getValueAt(i, 0).toString()) == przychodList.get(i).getId()) {
                 try {
                     if (Double.parseDouble(incomesTableList.getValueAt(i, 1).toString()) == przychodList.get(i).getWartosc()) {
@@ -105,17 +125,19 @@ public class ManagementClubCostsIncomesPage extends JFrame {
                     }
 
                 } catch (NumberFormatException e) {
-                    wrong++;
-                    wrongRows.add(i);
+                    wrongInputDataCell++;
+                    wrongRowsToBeHighlited.add(i);
                     this.repaint();
                 }
             }
         }
-        if (wrong == 0) {
-            wrongRows.clear();
+        if (wrongInputDataCell == 0) {
+            wrongRowsToBeHighlited.clear();
             this.repaint();
-            if (!changedPrzychod.isEmpty())
-                askToSaveIncomes();
+            return true;
+        } else {
+            this.repaint();
+            return false;
         }
     }
 
@@ -186,13 +208,10 @@ public class ManagementClubCostsIncomesPage extends JFrame {
 
             Component c = super.getTableCellRendererComponent(table, value,
                     isSelected, hasFocus, row, col);
-            if (wrongRows.contains(row)) {
+            if (wrongRowsToBeHighlited.contains(row)) {
                 c.setBackground(Color.RED);
             } else {
                 c.setBackground(Color.WHITE);
-            }
-            if (col == 0) {
-                c.setEnabled(false);
             }
             return c;
         }

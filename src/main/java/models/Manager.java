@@ -5,13 +5,19 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
+
 @Entity(name = "manager")
-public class Manager extends Pracownik{
+public class Manager extends Pracownik {
 
     private double dodatek;
 
-    public Manager( String imie, String nazwisko, String email, LocalDate dataUrodzenia, int numerTelefonu, Adres adres, LocalDate dataZatrudnienia, Double pensja, double dodatek) {
-        super( imie, nazwisko, email, dataUrodzenia, numerTelefonu, adres,  dataZatrudnienia, pensja);
+    public Manager(String imie, String nazwisko, String email, LocalDate dataUrodzenia, int numerTelefonu, Adres adres, LocalDate dataZatrudnienia, Double pensja, double dodatek) {
+        super(imie, nazwisko, email, dataUrodzenia, numerTelefonu, adres, dataZatrudnienia, pensja);
+        this.dodatek = dodatek;
+    }
+
+    public Manager(Klient klient, LocalDate dataZatrudnienia, Double pensja, double dodatek) {
+        super(klient, dataZatrudnienia, pensja);
         this.dodatek = dodatek;
     }
 

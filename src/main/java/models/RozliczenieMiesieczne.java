@@ -1,6 +1,11 @@
 package models;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
@@ -15,9 +20,9 @@ public class RozliczenieMiesieczne {
     @GenericGenerator(name = "increment", strategy = "increment")
     private long id;
     private LocalDate miesiacPokrycia;
-    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Przychod> listaPrzychodow;
-    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Koszt> listaKosztow;
     private Double sumaPelnaKosztow;
     private Double sumaPelnaPrzychodow;
@@ -69,6 +74,7 @@ public class RozliczenieMiesieczne {
     public Klub getIdKlubu() {
         return idKlubu;
     }
+
     @Transactional
     public Double getSumaPelnaKosztow() {
 
@@ -79,6 +85,7 @@ public class RozliczenieMiesieczne {
         sumaPelnaKosztow = sum;
         return sum;
     }
+
     @Transactional
     public Double getSumaPelnaPrzychodow() {
         double sum = 0.0;
@@ -88,6 +95,64 @@ public class RozliczenieMiesieczne {
         sumaPelnaPrzychodow = sum;
         return sum;
     }
+
+    public void removeKoszt(Koszt koszt) {
+        StandardServiceRegistry registry = null;
+        SessionFactory sessionFactory = null;
+        try {
+            registry = new StandardServiceRegistryBuilder()
+                    .configure()
+                    .build();
+            sessionFactory = new MetadataSources(registry)
+                    .buildMetadata()
+                    .buildSessionFactory();
+            Session session = sessionFactory.openSession();
+            session.beginTransaction();
+            listaKosztow.remove(koszt);
+            session.delete(koszt);
+            session.update(this);
+            session.getTransaction().commit();
+            session.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            StandardServiceRegistryBuilder.destroy(registry);
+        } finally {
+            if (sessionFactory != null) {
+                sessionFactory.close();
+            }
+        }
+    }
+
+    ;
+
+    public void removePrzychod(Przychod przychod) {
+        StandardServiceRegistry registry = null;
+        SessionFactory sessionFactory = null;
+        try {
+            registry = new StandardServiceRegistryBuilder()
+                    .configure()
+                    .build();
+            sessionFactory = new MetadataSources(registry)
+                    .buildMetadata()
+                    .buildSessionFactory();
+            Session session = sessionFactory.openSession();
+            session.beginTransaction();
+            listaPrzychodow.remove(przychod);
+            session.delete(przychod);
+            session.update(this);
+            session.getTransaction().commit();
+            session.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            StandardServiceRegistryBuilder.destroy(registry);
+        } finally {
+            if (sessionFactory != null) {
+                sessionFactory.close();
+            }
+        }
+    }
+
+    ;
 
     public LocalDate getDataDodania() {
         return dataDodania;

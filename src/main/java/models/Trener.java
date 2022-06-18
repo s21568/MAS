@@ -16,6 +16,10 @@ public class Trener extends Pracownik {
         this.dodatekIlosciowy = dodatekIlosciowy;
     }
 
+    public Trener(Klient klient, LocalDate dataZatrudnienia, Double pensja, double dodatekIlosciowy) {
+        super(klient,dataZatrudnienia,pensja);
+        this.dodatekIlosciowy = dodatekIlosciowy;
+    }
     @Override
     Double obliczDodatek() {
         return null;

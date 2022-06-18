@@ -15,6 +15,11 @@ public class Recepcjonistka extends Pracownik {
         this.dodatekWydajnosciowy = dodatekWydajnosciowy;
     }
 
+    public Recepcjonistka(Klient klient, LocalDate dataZatrudnienia, Double pensja, double dodatekWydajnosciowy) {
+        super(klient,dataZatrudnienia,pensja);
+        this.dodatekWydajnosciowy = dodatekWydajnosciowy;
+    }
+
     public Recepcjonistka() {
     }
 

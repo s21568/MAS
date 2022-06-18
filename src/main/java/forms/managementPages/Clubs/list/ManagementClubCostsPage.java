@@ -163,13 +163,9 @@ public class ManagementClubCostsPage extends JFrame {
                     .buildSessionFactory();
             Session session = sessionFactory.openSession();
             session.beginTransaction();
-            int xa = 0;
-
             for (Klub klub : klubList) {
-                System.out.println("for " + xa++);
                 List<RozliczenieMiesieczne> rozliczenieMiesiecznetmp = session.createQuery("from rozliczenie_miesieczne where idKlubu.id=:id").setParameter("id", klub.getId()).list();
                 if (rozliczenieMiesiecznetmp.size() > 0) {
-                    System.out.println("if " + xa++);
                     rozliczenieMiesieczneList.addAll(rozliczenieMiesiecznetmp);
                     for (RozliczenieMiesieczne x : rozliczenieMiesiecznetmp) {
                         model.addRow(x.getFullInfo());
