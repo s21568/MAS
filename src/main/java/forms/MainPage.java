@@ -67,7 +67,7 @@ public class MainPage extends JFrame {
         LogIn.addActionListener(x -> {
             if (emaliField.getText() != null) {
                 emailLabel.setBackground(Color.BLACK);
-                List<Manager> manager = new LogInAuth().chceckCredentials(emaliField.getText());
+                List<Manager> manager = new LogInAuth().chceckCredentials(emaliField.getText(),passwordField.getText());
                 if (!manager.isEmpty()) {
                     authmanager = manager.get(0);
                     emailLabel.setForeground(Color.BLACK);

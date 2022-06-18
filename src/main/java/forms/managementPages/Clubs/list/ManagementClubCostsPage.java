@@ -120,7 +120,7 @@ public class ManagementClubCostsPage extends JFrame {
 
     private AskToPrint askToPrint() {
         return new AskToPrint(clubsMonthlyTableList, "COSTS_"
-                + "-" + authmanager.getImie()
+                + authmanager.getImie()
                 + "_" + authmanager.getNazwisko()
                 + "_" + DateTimeFormatter.ofPattern("dd_MM_yyyy_HH_mm").format(LocalDateTime.now()));
     }
@@ -146,12 +146,12 @@ public class ManagementClubCostsPage extends JFrame {
             yearChooseComboBox.addItem(x);
         }
         model.addColumn("Id");
-        model.addColumn("suma Kosztów");
-        model.addColumn("suma Przychodów");
-        model.addColumn("miesiąc pokrycia");
-        model.addColumn("data Dodania");
-        model.addColumn("Manager autoryzujący");
-        model.addColumn("id Klubu");
+        model.addColumn("Expenses");
+        model.addColumn("Incomes");
+        model.addColumn("Month Cov.");
+        model.addColumn("Create Date");
+        model.addColumn("Auth. Manager");
+        model.addColumn("Club");
         StandardServiceRegistry registry = null;
         SessionFactory sessionFactory = null;
         try {

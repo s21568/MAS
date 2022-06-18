@@ -186,9 +186,9 @@ public class ManagementClubCostsExpensesPage extends JFrame {
     public DefaultTableModel populateClientTableModel() {
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Id");
-        model.addColumn("Wartośc");
-        model.addColumn("Nazwa");
-        model.addColumn("Opis");
+        model.addColumn("Worth");
+        model.addColumn("Name");
+        model.addColumn("Description");
         for (Koszt x : rozliczenieMiesieczneList.get(0).getListaKosztow()) {
             model.addRow(x.getFullInfo());
         }

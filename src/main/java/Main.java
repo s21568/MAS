@@ -124,8 +124,8 @@ public class Main {
 //            session.save(przychod23);
 //            session.save(przychod33);
 //
-//            Manager manager2 = new Manager( "Joanna", "Nowak", "Nowak@gmail.com", LocalDate.of(1982, 1, 10), 282918281, adres5,  LocalDate.now(), 4500.0, 0.0);
-//            Manager manager3 = new Manager( "Robert", "Kowalski", "Kowalski@gmail.com", LocalDate.of(1999, 12, 12), 282919281, adres7, LocalDate.now(), 3500.0, 200.0);
+//            Manager manager2 = new Manager( "Joanna", "Nowak", "Nowak@gmail.com", LocalDate.of(1982, 1, 10), 282918281, adres5,  LocalDate.now(), 4500.0, 0.0,"haslo123");
+//            Manager manager3 = new Manager( "Robert", "Kowalski", "Kowalski@gmail.com", LocalDate.of(1999, 12, 12), 282919281, adres7, LocalDate.now(), 3500.0, 200.0,"password");
 //            session.save(manager2);
 //            session.save(manager3);
 //
@@ -195,7 +195,7 @@ public class Main {
 //            session.save(pakiet1);
 //            session.save(pakiet2);
 //            session.save(pakiet3);
-
+//
 
             session.getTransaction().commit();
             session.close();

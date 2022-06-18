@@ -90,10 +90,10 @@ public class ManagementClubsPage extends JFrame {
             Session session = sessionFactory.openSession();
             session.beginTransaction();
             model.addColumn("Id");
-            model.addColumn("DataOtwarcia");
-            model.addColumn("GodzinaOtwarcia");
-            model.addColumn("GodzinaZamkniecia");
-            model.addColumn("Adres");
+            model.addColumn("Opening Date");
+            model.addColumn("Opening Hour");
+            model.addColumn("Closing Hour");
+            model.addColumn("Address");
 
             klubList = session.createQuery("from klub").list();
             for (Klub x : klubList) {

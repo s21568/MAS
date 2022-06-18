@@ -55,7 +55,7 @@ public class ClassList extends JFrame {
         LogIn.addActionListener(x -> {
             if (emaliField.getText() != null) {
                 emailLabel.setBackground(Color.BLACK);
-                List<Manager> manager = new LogInAuth().chceckCredentials(emaliField.getText());
+                List<Manager> manager = new LogInAuth().chceckCredentials(emaliField.getText(),passwordField.getText());
                 if (!manager.isEmpty()) {
                     authmanager = manager.get(0);
                     emailLabel.setText("Welcome "+authmanager.getImie());
@@ -98,11 +98,11 @@ public class ClassList extends JFrame {
             Session session = sessionFactory.openSession();
             session.beginTransaction();
             model.addColumn("Id");
-            model.addColumn("Nazwa");
-            model.addColumn("DataOdbywania");
-            model.addColumn("Opis");
-            model.addColumn("Klub");
-            model.addColumn("Czy tylko Dorośli?");
+            model.addColumn("Name");
+            model.addColumn("Date");
+            model.addColumn("Description");
+            model.addColumn("Club");
+            model.addColumn("Adults only?");
 
             List<Zajecia> zajeciaList = session.createQuery("from zajecia ").list();
             for (Zajecia x : zajeciaList) {

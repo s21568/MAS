@@ -55,7 +55,7 @@ public class ClubList extends JFrame {
         LogIn.addActionListener(x -> {
             if (emaliField.getText() != null) {
                 emailLabel.setBackground(Color.BLACK);
-                List<Manager> manager = new LogInAuth().chceckCredentials(emaliField.getText());
+                List<Manager> manager = new LogInAuth().chceckCredentials(emaliField.getText(),passwordField.getText());
                 if (!manager.isEmpty()) {
                     authmanager = manager.get(0);
                     emailLabel.setText("Welcome " + authmanager.getImie());
@@ -98,10 +98,10 @@ public class ClubList extends JFrame {
             Session session = sessionFactory.openSession();
             session.beginTransaction();
             model.addColumn("Id");
-            model.addColumn("DataOtwarcia");
-            model.addColumn("GodzinaOtwarcia");
-            model.addColumn("GodzinaZamkniecia");
-            model.addColumn("Adres");
+            model.addColumn("Opening Date");
+            model.addColumn("Opening Hour");
+            model.addColumn("Closing Hour");
+            model.addColumn("Address");
 
             List<Klub> klubList = session.createQuery("from klub ").list();
             for (Klub x : klubList) {

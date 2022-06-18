@@ -74,8 +74,8 @@ public class Klub {
         String[] tmp = new String[5];
         tmp[0] = String.valueOf(getId());
         tmp[1] = getDataOtwarcia().toString();
-        tmp[2] = godzinaOtwarcia.toString();
-        tmp[3] = godzinaZamkniecia.toString();
+        tmp[2] = godzinaOtwarcia.toString().split("T")[1];
+        tmp[3] = godzinaZamkniecia.toString().split("T")[1];
         tmp[4] = getAdres().pokazInfo();
         return tmp;
     }

@@ -191,9 +191,9 @@ public class ManagementClubCostsIncomesPage extends JFrame {
     private DefaultTableModel populateClientTableModel() {
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Id");
-        model.addColumn("Wartośc");
-        model.addColumn("Nazwa");
-        model.addColumn("Opis");
+        model.addColumn("Worth");
+        model.addColumn("Name");
+        model.addColumn("Description");
         for (Przychod x : rozliczenieMiesieczneList.get(0).getListaPrzychodow()) {
             model.addRow(x.getFullInfo());
         }

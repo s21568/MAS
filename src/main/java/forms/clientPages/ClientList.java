@@ -1,5 +1,6 @@
 package forms.clientPages;
 
+import forms.unilities.LogInAuth;
 import forms.unilities.SwingUiChanger;
 import forms.classPages.ClassList;
 import forms.MainPage;
@@ -55,29 +56,7 @@ public class ClientList extends JFrame {
         LogIn.addActionListener(x -> {
             if (emaliField.getText() != null) {
                 emailLabel.setBackground(Color.BLACK);
-                List<Manager> manager = new ArrayList<>();
-                StandardServiceRegistry registry = null;
-                SessionFactory sessionFactory = null;
-                try {
-                    registry = new StandardServiceRegistryBuilder()
-                            .configure()
-                            .build();
-                    sessionFactory = new MetadataSources(registry)
-                            .buildMetadata()
-                            .buildSessionFactory();
-                    Session session = sessionFactory.openSession();
-                    session.beginTransaction();
-                    manager = session.createQuery("from manager where email=:email").setParameter("email", emaliField.getText()).list();
-                    session.getTransaction().commit();
-                    session.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    StandardServiceRegistryBuilder.destroy(registry);
-                } finally {
-                    if (sessionFactory != null) {
-                        sessionFactory.close();
-                    }
-                }
+                List<Manager> manager = new LogInAuth().chceckCredentials(emaliField.getText(),passwordField.getText());
                 if (!manager.isEmpty()) {
                     authmanager = manager.get(0);
                     emailLabel.setText("Welcome "+authmanager.getImie());
@@ -119,13 +98,13 @@ public class ClientList extends JFrame {
             Session session = sessionFactory.openSession();
             session.beginTransaction();
             model.addColumn("Id");
-            model.addColumn("Imie");
-            model.addColumn("Nazwisko");
-            model.addColumn("DataUrodzenia");
-            model.addColumn("NumerTelefonu");
+            model.addColumn("First Name");
+            model.addColumn("Second Name");
+            model.addColumn("Birth Date");
+            model.addColumn("Phone");
             model.addColumn("Email");
-            model.addColumn("IlośćSesji");
-            model.addColumn("Adres");
+            model.addColumn("Sessions");
+            model.addColumn("Address");
 
             List<Klient> klientList = session.createQuery("from klient").list();
             for (Klient x : klientList) {

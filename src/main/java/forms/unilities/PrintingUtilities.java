@@ -27,6 +27,8 @@ public class PrintingUtilities {
             Shape oldClip = g2.getClip();
             g2.clipRect(0, 0, jTable.getWidth(), jTable.getHeight());
 
+            g2.scale(0.9,0.9);
+
             jTable.print(g2);
             g2.setClip(oldClip);
 

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LogInAuth {
-    public List<Manager> chceckCredentials(String email) {
+    public List<Manager> chceckCredentials(String email,String password) {
         List<Manager> manager = new ArrayList<>();
         StandardServiceRegistry registry = null;
         SessionFactory sessionFactory = null;
@@ -24,7 +24,7 @@ public class LogInAuth {
                     .buildSessionFactory();
             Session session = sessionFactory.openSession();
             session.beginTransaction();
-            manager = session.createQuery("from manager where email=:email").setParameter("email", email).list();
+            manager = session.createQuery("from manager where email=:email and haslo =:haslo").setParameter("email", email).setParameter("haslo", password).list();
             session.getTransaction().commit();
             session.close();
         } catch (Exception e) {
