@@ -75,7 +75,7 @@ public class RozliczenieMiesieczne {
         return idKlubu;
     }
 
-    @Transactional
+
     public Double getSumaPelnaKosztow() {
 
         double sum = 0.0;
@@ -86,7 +86,7 @@ public class RozliczenieMiesieczne {
         return sum;
     }
 
-    @Transactional
+
     public Double getSumaPelnaPrzychodow() {
         double sum = 0.0;
         for (Przychod x : getListaPrzychodow()) {
