@@ -34,11 +34,13 @@ public class ManagementClubsPage extends JFrame {
     private JComboBox comboBox1;
     private JButton addCosts;
     private final SwingUiChanger swingUiChanger = new SwingUiChanger();
+    private Manager authManager;
     private List<Klub> klubList = new ArrayList<>();
     private List<Klub> selectedKlubList = new ArrayList<>();
 
     public ManagementClubsPage(Manager manager) {
         setContentPane(managementPageMainPanel);
+        authManager=manager;
         clubsTableList.setModel(populateClientTableModel());
         emailLabel.setText("Welcome " + manager.getImie());
         clubsTableList.setColumnSelectionAllowed(true);
@@ -95,7 +97,7 @@ public class ManagementClubsPage extends JFrame {
             model.addColumn("Closing Hour");
             model.addColumn("Address");
 
-            klubList = session.createQuery("from klub").list();
+            klubList = session.createQuery("from klub where zarzadca.id=:id").setParameter("id",authManager.getId()).list();
             for (Klub x : klubList) {
                 model.addRow(x.getFullInfo());
             }

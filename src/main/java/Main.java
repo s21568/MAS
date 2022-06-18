@@ -51,13 +51,7 @@ public class Main {
 //            session.save(adres6);
 //            session.save(adres7);
 //
-//            session.save(klub1);
-//            session.save(klub2);
-//            session.save(klub3);
-//            session.save(klub4);
-//            session.save(klub5);
-//            session.save(klub6);
-//            session.save(klub7);
+//
 //
 //            Koszt koszt1 = new Koszt(1L, 200.0, "detergenty", "mydła, scierki, płyny");
 //            Koszt koszt2 = new Koszt(1L, 1500.00, "pensja Włodek", "miesiąc czerwiec");
@@ -128,6 +122,22 @@ public class Main {
 //            Manager manager3 = new Manager( "Robert", "Kowalski", "Kowalski@gmail.com", LocalDate.of(1999, 12, 12), 282919281, adres7, LocalDate.now(), 3500.0, 200.0,"password");
 //            session.save(manager2);
 //            session.save(manager3);
+//            klub1.setZarzadca(manager2);
+//            klub2.setZarzadca(manager2);
+//            klub3.setZarzadca(manager2);
+//            klub4.setZarzadca(manager2);
+//            klub5.setZarzadca(manager2);
+//            klub6.setZarzadca(manager3);
+//            klub7.setZarzadca(manager3);
+//
+//
+//            session.save(klub1);
+//            session.save(klub2);
+//            session.save(klub3);
+//            session.save(klub4);
+//            session.save(klub5);
+//            session.save(klub6);
+//            session.save(klub7);
 //
 //            Klient klient1 = new Klient( "Michał", "Mak", "Mak@gmail.com", LocalDate.of(2000, 1, 1), 921921921, adres1);
 //            Klient klient2 = new Klient( "Kamil", "Ślimak", "Ślimak@gmail.com", LocalDate.of(1993, 1, 1), 921921921, adres2);
@@ -195,7 +205,7 @@ public class Main {
 //            session.save(pakiet1);
 //            session.save(pakiet2);
 //            session.save(pakiet3);
-//
+
 
             session.getTransaction().commit();
             session.close();

@@ -17,6 +17,8 @@ public class Klub {
     private LocalDateTime godzinaZamkniecia;
     @ManyToOne
     private Adres adres;
+    @ManyToOne
+    private Manager zarzadca;
 
     public Klub(long id, Adres adres, LocalDate dataOtwarcia, LocalDateTime godzinaOtwarcia, LocalDateTime godzinaZamkniecia) {
         this.id = id;
@@ -30,6 +32,13 @@ public class Klub {
 
     }
 
+    public void setZarzadca(Manager manager){
+        zarzadca=manager;
+    }
+
+    public Manager getZarzadca(){
+        return zarzadca;
+    }
     public void setId(long id) {
         this.id = id;
     }
